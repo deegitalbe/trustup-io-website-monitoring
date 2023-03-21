@@ -10,3 +10,8 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('domains', TestController::class);
