@@ -4,19 +4,19 @@ metadata:
   namespace: app
   name: laravel-in-kubernetes
 data:
-  APP_NAME: "trustup-io-monolith"
+  APP_NAME: "trustup-io-website-monitoring"
   APP_ENV: "production"
   APP_DEBUG: "true"
-  APP_URL: "monolith.trustup.io.prod"
+  APP_URL: "website.monitoring.trustup.io"
 
   LOG_CHANNEL: "flare"
   LOG_DEPRECATIONS_CHANNEL: "null"
   LOG_LEVEL: "debug"
 
   DB_CONNECTION: "mysql"
-  DB_HOST: "trustup-io-monolith-do-user-3877774-0.b.db.ondigitalocean.com"
+  DB_HOST: "trustup-io-website-monitoring-do-user-3877774-0.b.db.ondigitalocean.com"
   DB_PORT: "25060"
-  DB_DATABASE: "trustup-io-monolith-db"
+  DB_DATABASE: "trustup-io-website-monitoring-db"
 
   BROADCAST_DRIVER: "log"
   CACHE_DRIVER: "file"
@@ -40,7 +40,7 @@ data:
   AWS_USE_PATH_STYLE_ENDPOINT: "false"
 
   DO_DEFAULT_REGION: "ams3"
-  DO_BUCKET: "trustup-io-monolith"
+  DO_BUCKET: "trustup-io-website-monitoring"
   DO_ENDPOINT: "https://ams3.digitaloceanspaces.com/"
   DO_USE_PATH_STYLE_ENDPOINT: "false"
 
@@ -64,8 +64,8 @@ data:
   MEILISEARCH_HOST: "http://meilisearch:7700"
 
   TRUSTUP_URL: "https://www.trustup.be"
-  TRUSTUP_MESSAGING_APP_KEY: "trustup-io-monolith"
-  TRUSTUP_MODEL_BROADCAST_APP_KEY: "trustup-io-monolith"
+  TRUSTUP_MESSAGING_APP_KEY: "trustup-io-website-monitoring"
+  TRUSTUP_MODEL_BROADCAST_APP_KEY: "trustup-io-website-monitoring"
   TRUSTUP_MEDIA_IO_URL: "https://media.trustup.io"
   TRUSTUP_MESSAGING_API_URL: "https://messaging.trustup.io/api"
   TRUSTUP_IO_AUTHENTIFICATION_URL: "https://auth.trustup.io"

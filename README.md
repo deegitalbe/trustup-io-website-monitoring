@@ -9,15 +9,15 @@ This package is used to scaffold a preconfigured monolith application.
 Search for those values and replace them with desired values.
 
 ```shell
-monolith.trustup.io.test
+monitoring.trustup.io.test
 ```
 
 ```shell
-monolith.trustup.io.prod
+website.monitoring.trustup.io
 ```
 
 ```shell
-trustup-io-monolith
+trustup-io-website-monitoring
 ```
 
 ## Available scripts

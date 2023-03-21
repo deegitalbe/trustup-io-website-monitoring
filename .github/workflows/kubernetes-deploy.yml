@@ -33,7 +33,7 @@ jobs:
           file: Dockerfile.prod
           target: cli
           push: true
-          tags: henrotaym/trustup-io-monolith-cli:${{ github.sha }}
+          tags: henrotaym/trustup-io-website-monitoring-cli:${{ github.sha }}
       -
         name: Build and push cron image
         uses: docker/build-push-action@v3
@@ -42,7 +42,7 @@ jobs:
           file: Dockerfile.prod
           target: cron
           push: true
-          tags: henrotaym/trustup-io-monolith-cron:${{ github.sha }}
+          tags: henrotaym/trustup-io-website-monitoring-cron:${{ github.sha }}
       -
         name: Build and push fpm image
         uses: docker/build-push-action@v3
@@ -51,7 +51,7 @@ jobs:
           file: Dockerfile.prod
           target: fpm_server
           push: true
-          tags: henrotaym/trustup-io-monolith-fpm:${{ github.sha }}
+          tags: henrotaym/trustup-io-website-monitoring-fpm:${{ github.sha }}
       -
         name: Build and push web image
         uses: docker/build-push-action@v3
@@ -60,7 +60,7 @@ jobs:
           file: Dockerfile.prod
           target: web_server
           push: true
-          tags: henrotaym/trustup-io-monolith-web:${{ github.sha }}
+          tags: henrotaym/trustup-io-website-monitoring-web:${{ github.sha }}
       - 
         name: Install and configure kubectl
         # VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)

@@ -3,8 +3,8 @@
 ## Terraform cloud
 
 ### Register workspace
-- Create [trustup-io-monolith workspace](https://app.terraform.io/app/deegital/workspaces/new)
-- Add `trustup_io_app_key` variable with `trustup-io-monolith` value to your [workspace variables](https://app.terraform.io/app/deegital/workspaces/trustup-io-monolith/variables)
+- Create [trustup-io-website-monitoring workspace](https://app.terraform.io/app/deegital/workspaces/new)
+- Add `trustup_io_app_key` variable with `trustup-io-website-monitoring` value to your [workspace variables](https://app.terraform.io/app/deegital/workspaces/trustup-io-website-monitoring/variables)
 
 ### Create infrastructure
 In your ``infrastructure`` folder run
@@ -23,7 +23,7 @@ doctl kubernetes cluster kubeconfig save your_cluster_id_here
 ## Configure github secrets
 
 ### Create environments
-You should configure ``production`` and ``staging`` [environments](https://github.com/deegitalbe/trustup-io-monolith/settings/environments) for your repository
+You should configure ``production`` and ``staging`` [environments](https://github.com/deegitalbe/trustup-io-website-monitoring/settings/environments) for your repository
 
 ### Save doctl cluster id to desired environment
 ```shell

@@ -1,8 +1,8 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-    trustup-io-monolith:
-        container_name: trustup-io-monolith
+    trustup-io-website-monitoring:
+        container_name: trustup-io-website-monitoring
         build:
             context: ./vendor/laravel/sail/runtimes/8.1
             dockerfile: Dockerfile
@@ -22,13 +22,13 @@ services:
         volumes:
             - '.:/var/www/html'
         networks:
-            - trustup-io-monolith-sail
+            - trustup-io-website-monitoring-sail
             - applications
         depends_on:
-            - trustup-io-monolith-mysql
-            - trustup-io-monolith-redis
-    trustup-io-monolith-mysql:
-        container_name: trustup-io-monolith-mysql
+            - trustup-io-website-monitoring-mysql
+            - trustup-io-website-monitoring-redis
+    trustup-io-website-monitoring-mysql:
+        container_name: trustup-io-website-monitoring-mysql
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-43306}:3306'
@@ -40,37 +40,37 @@ services:
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'trustup-io-monolith-sail-mysql:/var/lib/mysql'
+            - 'trustup-io-website-monitoring-sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
-            - trustup-io-monolith-sail
+            - trustup-io-website-monitoring-sail
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
-    trustup-io-monolith-redis:
-        container_name: trustup-io-monolith-redis
+    trustup-io-website-monitoring-redis:
+        container_name: trustup-io-website-monitoring-redis
         image: 'redis:alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-46379}:6379'
         volumes:
-            - 'trustup-io-monolith-sail-redis:/data'
+            - 'trustup-io-website-monitoring-sail-redis:/data'
         networks:
-            - trustup-io-monolith-sail
+            - trustup-io-website-monitoring-sail
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
 networks:
-    trustup-io-monolith-sail:
+    trustup-io-website-monitoring-sail:
         driver: bridge
     applications:
         name: applications
         external: true
 volumes:
-    trustup-io-monolith-sail-mysql:
+    trustup-io-website-monitoring-sail-mysql:
         driver: local
-    trustup-io-monolith-sail-mysql-testing:
+    trustup-io-website-monitoring-sail-mysql-testing:
         driver: local
-    trustup-io-monolith-sail-redis:
+    trustup-io-website-monitoring-sail-redis:
         driver: local

@@ -9,7 +9,7 @@
 REGISTRY ?= henrotaym
 
 # PROJECT defines suffix for images built & stored to docker hub.
-PROJECT ?= trustup-io-monolith
+PROJECT ?= trustup-io-website-monitoring
 
 # Commands
 deploy: docker-build docker-push kubernetes-deploy

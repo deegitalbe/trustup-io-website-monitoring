@@ -9,7 +9,7 @@ terraform {
     organization = "deegital"
 
     workspaces {
-      name = "trustup-io-monolith"
+      name = "trustup-io-website-monitoring"
     }
   }
 }
