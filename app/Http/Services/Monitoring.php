@@ -3,6 +3,7 @@ namespace App\Http\Services;
 
 use App\Api\Endpoints\PageSpeed\PageSpeed;
 use App\Api\Endpoints\WebsiteDomains\Domains;
+use App\Models\Report;
 use Illuminate\Support\Collection;
 
 class Monitoring {
@@ -29,8 +30,16 @@ class Monitoring {
     $endpoint = app()->make(PageSpeed::class);
 
     $report = $endpoint->analyze("https://www.123menuiserie.be/", $strategy)->response()->get(true);
-
-    dd($report);
+    
+    Report::create([
+      "url" => "https://www.123menuiserie.be/",
+      "performance_score" => $report['lighthouseResult']['categories']['performance']['score'],
+      "seo_score" => 0.75,
+      "first_contentful_paint" => $report['lighthouseResult']['audits']['metrics']['details']['items'][0]['firstContentfulPaint'],
+      "strategy" => $strategy,
+  ]);
+  dd($report);
+    
 
     // $jobs = $this->getDomains()->map(function($website){
 

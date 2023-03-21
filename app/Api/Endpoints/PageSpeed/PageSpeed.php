@@ -19,7 +19,7 @@ class PageSpeed
     {
         /** @var RequestContract */
         $request = app()->make(RequestContract::class);
-
+        // TODO category should take both params, actually taking the first
         $request->setVerb('GET')->addQuery([
           'url' => $url,
           'category' => ['performance', 'seo'],

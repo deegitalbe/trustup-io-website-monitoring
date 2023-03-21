@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('url');
             $table->decimal('performance_score');
             $table->decimal('seo_score');
+            $table->integer('first_contentful_paint');
             $table->string('strategy');
             $table->timestamps();
         });
