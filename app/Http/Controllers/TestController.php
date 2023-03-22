@@ -7,7 +7,8 @@ class TestController extends Controller
 {
     public function __invoke(Monitoring $service)
     {
-       dd($service->mapReport("desktop"));
-       dd($service->mapReport("mobile"));
+    //    $service->mapReport("desktop");
+    //    dd("finished");
+    //    dd($service->mapReport("mobile"));
     }
 }

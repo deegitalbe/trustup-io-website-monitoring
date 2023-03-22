@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('website_id');
+            $table->string('domain');
             $table->string('url');
             $table->decimal('performance_score');
             $table->decimal('seo_score');

@@ -15,7 +15,7 @@ class CallPageSpeed implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected string $url;
+    protected array $website;
     protected string $strategy;
 
     /**
@@ -23,9 +23,9 @@ class CallPageSpeed implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(string $url, string $strategy)
+    public function __construct(array $website, string $strategy)
     {
-        $this->url = $url;
+        $this->website = $website;
         $this->strategy = $strategy;
     }
 
@@ -39,18 +39,18 @@ class CallPageSpeed implements ShouldQueue
          /** @var PageSpeed */
         $endpoint = app()->make(PageSpeed::class);
 
-        $report = $endpoint->analyze($this->url, $this->strategy)->response()->get(true);
+        $report = $endpoint->analyze($this->website['url'], $this->strategy)->response()->get(true);
 
-
-        Storage::put('report' . $report['id'] . now(), json_encode($report));
-
-        // AND (Stock report in json file on s3 and Stock in DB)
-
+        // Configure s3
+        // Storage::put('report' . $report['id'] . now(), json_encode($report));
 
         Report::create([
-            "url" => $this->url,
-            "performance_score" => $report['lighthouseResult']['categories']['perfomance']['score'],
+            "url" => $this->website['url'],
+            "website_id" => $this->website['id'],
+            "domain" => $this->website['domain'],
+            "performance_score" => $report['lighthouseResult']['categories']['performance']['score'],
             "seo_score" => $report['lighthouseResult']['categories']['seo']['score'],
+            "first_contentful_paint" => $report['lighthouseResult']['audits']['metrics']['details']['items'][0]['firstContentfulPaint'],
             "strategy" => $this->strategy,
         ]);
     }

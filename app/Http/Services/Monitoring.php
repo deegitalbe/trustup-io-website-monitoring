@@ -3,17 +3,13 @@ namespace App\Http\Services;
 
 use App\Api\Endpoints\PageSpeed\PageSpeed;
 use App\Api\Endpoints\WebsiteDomains\Domains;
+use App\Jobs\CallPageSpeed;
 use App\Models\Report;
+use Illuminate\Bus\Batch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
 
 class Monitoring {
-
-  protected Collection $reports;
-
-  public function __construct()
-  {
-    $this->reports = collect();
-  }
 
   public function getDomains(): Collection
   {
@@ -21,41 +17,22 @@ class Monitoring {
     $endpoint = app()->make(Domains::class);
     $array = $endpoint->index()->response()->get(true);
     
-    return collect($array['data']);
+    //TODO Remove splice and take
+    return collect($array['data'])->splice(1)->take(5);
   }
 
   public function mapReport(string $strategy)
   {
-    /** @var PageSpeed */
-    $endpoint = app()->make(PageSpeed::class);
 
-    $report = $endpoint->analyze("https://www.123menuiserie.be/", $strategy)->response()->get(true);
-    
-    Report::create([
-      "url" => "https://www.123menuiserie.be/",
-      "performance_score" => $report['lighthouseResult']['categories']['performance']['score'],
-      "seo_score" => 0.75,
-      "first_contentful_paint" => $report['lighthouseResult']['audits']['metrics']['details']['items'][0]['firstContentfulPaint'],
-      "strategy" => $strategy,
-  ]);
-  dd($report);
-    
+    $jobs = $this->getDomains()->map(function($website) use ($strategy){
 
-    // $jobs = $this->getDomains()->map(function($website){
-
-    //     return CallPageSpeed::dispatch($website['url'], $strategy);
+        return CallPageSpeed::dispatch($website, $strategy);
   
-    // });
+    });
 
-    // $batch = Bus::batch($jobs)->then(function(Batch $batch){
-    //   return "All jobs finished";
-    // })->name('Call PageSpeed')->dispatch();
-
-    
-
-    // dd($this->reports);
-
-    // return $this->reports;
+    $batch = Bus::batch($jobs)->then(function(Batch $batch){
+      return "All jobs finished";
+    })->name('Call PageSpeed')->dispatch();
 
   }
 

@@ -19,17 +19,16 @@ class PageSpeed
     {
         /** @var RequestContract */
         $request = app()->make(RequestContract::class);
-        // TODO category should take both params, actually taking the first
-        $request->setVerb('GET')->addQuery([
+        
+        $request->setVerb('GET')
+            ->setUrl("?category=performance&category=seo")
+            ->addQuery([
           'url' => $url,
-          'category' => ['performance', 'seo'],
           'strategy' => $strategy
-          
         ]);
         
         $response = $this->client->try($request, "Cannot get domains");
         
-
         return $response;
     }
 }

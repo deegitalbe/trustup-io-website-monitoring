@@ -9,5 +9,5 @@ class Report extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['url', 'performance_score', 'seo_score', 'strategy', 'first_contentful_paint'];
+    protected $fillable = ['url', 'performance_score', 'seo_score', 'strategy', 'first_contentful_paint', 'website_id', 'domain'];
 }
