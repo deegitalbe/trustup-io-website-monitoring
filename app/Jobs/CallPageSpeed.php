@@ -45,7 +45,7 @@ class CallPageSpeed implements ShouldQueue
         $report = $endpoint->analyze($this->website['url'], $this->strategy)->response()->get(true);
 
         //TODO Configure s3
-        Storage::put($this->path . '/'. $this->strategy. '/' . $this->website['id'], json_encode($report));
+        Storage::put($this->path, json_encode($report));
 
         Report::create([
             "url" => $this->website['url'],
