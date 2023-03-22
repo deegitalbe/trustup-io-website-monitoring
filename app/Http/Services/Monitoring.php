@@ -3,11 +3,13 @@ namespace App\Http\Services;
 
 use App\Api\Endpoints\PageSpeed\PageSpeed;
 use App\Api\Endpoints\WebsiteDomains\Domains;
+use App\Http\Services\Enums\StrategyType;
 use App\Jobs\CallPageSpeed;
 use App\Models\Report;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Storage;
 
 class Monitoring {
 
@@ -23,11 +25,11 @@ class Monitoring {
 
   public function mapReport(string $strategy)
   {
+    $path = "reports_" . now();
+    Storage::makeDirectory($path);
 
-    $jobs = $this->getDomains()->map(function($website) use ($strategy){
-
-        return CallPageSpeed::dispatch($website, $strategy);
-  
+    $jobs = $this->getDomains()->map(function($website) use ($strategy, $path){
+        return new CallPageSpeed($website, $strategy, $path);
     });
 
     $batch = Bus::batch($jobs)->then(function(Batch $batch){
