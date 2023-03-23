@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "511f79f48fb0e01b102c8b97011f148d",
+    "content-hash": "915e280f3f354e5e7e78316b505bf3eb",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1906,16 +1906,16 @@
         },
         {
             "name": "henrotaym/laravel-test-suite",
-            "version": "v2.2.3",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/henrotaym/laravel-test-suite.git",
-                "reference": "62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc"
+                "reference": "2ca78d3501045ce9a6df20287624fd7746b877b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrotaym/laravel-test-suite/zipball/62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc",
-                "reference": "62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc",
+                "url": "https://api.github.com/repos/henrotaym/laravel-test-suite/zipball/2ca78d3501045ce9a6df20287624fd7746b877b7",
+                "reference": "2ca78d3501045ce9a6df20287624fd7746b877b7",
                 "shasum": ""
             },
             "require-dev": {
@@ -1941,9 +1941,9 @@
             "description": "Adding recurrent functionalities to laravel test suite.",
             "support": {
                 "issues": "https://github.com/henrotaym/laravel-test-suite/issues",
-                "source": "https://github.com/henrotaym/laravel-test-suite/tree/v2.2.3"
+                "source": "https://github.com/henrotaym/laravel-test-suite/tree/v2.2.4"
             },
-            "time": "2022-02-01T02:12:44+00:00"
+            "time": "2023-01-15T22:15:24+00:00"
         },
         {
             "name": "henrotaym/laravel-trustup-messaging-io",

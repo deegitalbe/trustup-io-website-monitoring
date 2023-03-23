@@ -66,6 +66,7 @@ class Monitoring {
   {
      /** @var Domains */
     $endpoint = app()->make(Domains::class);
+    //TODO remove take(5)
     $this->websites = $endpoint->index()->getWebsites()->take(5);
     
     return $this;
@@ -92,7 +93,7 @@ class Monitoring {
     })->name('Call PageSpeed')->dispatch();
   }
 
-  public function getFilePath(Website $website)
+  public function getFilePath(Website $website): string
   {
     return $this->folder . '/'. $this->strategyType->value . '/' . $website->getWebsiteId() . '.json';
   }
