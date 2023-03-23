@@ -4,6 +4,7 @@ namespace App\Api\Endpoints\WebsiteDomains;
 
 
 use App\Api\Credentials\WebsiteDomains\WebsiteDomainCredential;
+use App\Api\Response\WebsiteDomains\WebsiteDomainResponse;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 
@@ -16,7 +17,7 @@ class Domains
         $this->client = $client->setCredential($credential);
     }
 
-    public function index()
+    public function index(): WebsiteDomainResponse
     {
         /** @var RequestContract */
         $request = app()->make(RequestContract::class);
@@ -25,6 +26,6 @@ class Domains
 
         $response = $this->client->try($request, "Cannot get domains");
 
-        return $response;
+        return app()->make(WebsiteDomainResponse::class, ['response' => $response]);
     }
 }

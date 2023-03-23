@@ -3,6 +3,8 @@
 namespace App\Api\Endpoints\PageSpeed;
 
 use App\Api\Credentials\PageSpeed\PageSpeedCredential;
+use App\Http\Services\Enums\StrategyType;
+use App\Models\Website;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 
@@ -15,7 +17,7 @@ class PageSpeed
         $this->client = $client->setCredential($credential);
     }
 
-    public function analyze(string $url, string $strategy)
+    public function analyze(Website $website, StrategyType $strategy)
     {
         /** @var RequestContract */
         $request = app()->make(RequestContract::class);
@@ -23,11 +25,16 @@ class PageSpeed
         $request->setVerb('GET')
             ->setUrl("?category=performance&category=seo")
             ->addQuery([
-          'url' => $url,
-          'strategy' => $strategy
+          'url' => $website->getUrl(),
+          'strategy' => $strategy->value
         ]);
+
+        $exception = new PageSpeedException();
+        $exception->setWebsite($website);
         
-        $response = $this->client->try($request, "Cannot get domains");
+        $response = $this->client->try($request, $exception);
+
+        if ($response->failed()) report($response->error());
         
         return $response;
     }

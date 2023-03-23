@@ -6,6 +6,7 @@ use App\Api\Endpoints\WebsiteDomains\Domains;
 use App\Http\Services\Enums\StrategyType;
 use App\Jobs\CallPageSpeed;
 use App\Models\Report;
+use App\Models\Website;
 use Illuminate\Bus\Batch;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Support\Collection;
@@ -65,25 +66,23 @@ class Monitoring {
   {
      /** @var Domains */
     $endpoint = app()->make(Domains::class);
-    $array = $endpoint->index()->response()->get(true);
-
-    $this->websites = collect($array['data'])->splice(1)->take(5);
-
+    $this->websites = $endpoint->index()->getWebsites()->take(5);
+    
     return $this;
   }
 
   public function appendJobsToBatch(): self
   {
-    $this->websites->each(function($website){
+    $this->websites->each(function(Website $website){
       $this->appendWebsiteJobsToBatch($website);
     });
 
     return $this;
   }
 
-  public function appendWebsiteJobsToBatch($website): void
+  public function appendWebsiteJobsToBatch(Website $website): void
   {
-    $this->batch->add(new CallPageSpeed($website, $this->strategyType->value, $this->getFilePath($website))) ;
+    $this->batch->add(new CallPageSpeed($website, $this->strategyType, $this->getFilePath($website))) ;
   }
 
   public function dispatchBatch()
@@ -93,35 +92,9 @@ class Monitoring {
     })->name('Call PageSpeed')->dispatch();
   }
 
-  public function getFilePath($website)
+  public function getFilePath(Website $website)
   {
-    return $this->folder . '/'. $this->strategyType->value . '/' . $website['id'] . '.json';
+    return $this->folder . '/'. $this->strategyType->value . '/' . $website->getWebsiteId() . '.json';
   }
-
-//---------------------------------------------------
-  // public function getDomains(): Collection
-  // {
-  //   /** @var Domains */
-  //   $endpoint = app()->make(Domains::class);
-  //   $array = $endpoint->index()->response()->get(true);
-    
-  //   //TODO Remove splice and take
-  //   return collect($array['data'])->splice(1)->take(5);
-  // }
-
-  // public function mapReport(string $strategy)
-  // {
-  //   $path = "reports_" . now();
-  //   Storage::makeDirectory($path);
-
-  //   $jobs = $this->getDomains()->map(function($website) use ($strategy, $path){
-  //       return new CallPageSpeed($website, $strategy, $path);
-  //   });
-
-  //   $batch = Bus::batch($jobs)->then(function(Batch $batch){
-  //     return "All jobs finished";
-  //   })->name('Call PageSpeed')->dispatch();
-
-  // }
 
 }
