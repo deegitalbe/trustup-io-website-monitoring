@@ -1,7 +1,14 @@
+<?php 
 
-protected float $performance_score;
+namespace App\Models;
+
+
+class PageSpeedReport
+{
+    protected float $performance_score;
     protected float $seo_score;
     protected int $first_contentful_paint;
+    protected array $jsonData;
 
 
     public function setPerformanceScore(float $performanceScore): self
@@ -25,6 +32,13 @@ protected float $performance_score;
         return $this;
     }
 
+    public function setJsonData(array $data): self
+    {
+        $this->jsonData = $data;
+
+        return $this;
+    }
+
     public function getPerformanceScore(): float
     {
         return $this->performance_score;
@@ -39,3 +53,9 @@ protected float $performance_score;
     {
         return $this->first_contentful_paint;
     }
+
+    public function getJsonData(): string
+    {
+        return json_encode($this->jsonData);
+    }
+}

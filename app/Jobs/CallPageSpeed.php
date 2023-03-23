@@ -45,18 +45,18 @@ class CallPageSpeed implements ShouldQueue
          /** @var PageSpeed */
         $endpoint = app()->make(PageSpeed::class);
 
-        $report = $endpoint->analyze($this->website, $this->strategy)->response()->get(true);
+        $report = $endpoint->analyze($this->website, $this->strategy)->getReport();
 
         //TODO Configure s3
-        Storage::put($this->path, json_encode($report));
+        Storage::put($this->path, $report->getJsonData());
 
         Report::create([
             "url" => $this->website->getUrl(),
             "website_id" => $this->website->getWebsiteId(),
             "domain" => $this->website->getDomain(),
-            "performance_score" => $report['lighthouseResult']['categories']['performance']['score'],
-            "seo_score" => $report['lighthouseResult']['categories']['seo']['score'],
-            "first_contentful_paint" => $report['lighthouseResult']['audits']['metrics']['details']['items'][0]['firstContentfulPaint'],
+            "performance_score" => $report->getPerformanceScore(),
+            "seo_score" => $report->getSeoScore(),
+            "first_contentful_paint" => $report->getFirstContentfulPaint(),
             "strategy" => $this->strategy->value,
         ]);
     }

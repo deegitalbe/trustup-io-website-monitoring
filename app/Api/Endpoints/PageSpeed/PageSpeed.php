@@ -3,6 +3,7 @@
 namespace App\Api\Endpoints\PageSpeed;
 
 use App\Api\Credentials\PageSpeed\PageSpeedCredential;
+use App\Api\Response\PageSpeed\PageSpeedResponse;
 use App\Http\Services\Enums\StrategyType;
 use App\Models\Website;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
@@ -17,7 +18,7 @@ class PageSpeed
         $this->client = $client->setCredential($credential);
     }
 
-    public function analyze(Website $website, StrategyType $strategy)
+    public function analyze(Website $website, StrategyType $strategy): PageSpeedResponse
     {
         /** @var RequestContract */
         $request = app()->make(RequestContract::class);
@@ -36,6 +37,6 @@ class PageSpeed
 
         if ($response->failed()) report($response->error());
         
-        return $response;
+        return app()->make(PageSpeedResponse::class, ['response' => $response]);
     }
 }
