@@ -11,14 +11,14 @@ class ReportsStatistics
 
   protected function getReports(?StrategyType $strategyType = null, ?Carbon $startDate = null, ?Carbon $endDate = null): Collection
   {
-    $query = Report::query()->when();
+    $query = Report::query();
 
     if($strategyType){
-        $query->where('strategy', $strategyType->value);
+        $query->whereStrategy($strategyType);
     }
 
     if($startDate && $endDate){
-        $query->whereBetween('created_at', [$startDate, $endDate]);
+        $query->whereDate($startDate, $endDate);
     }
 
     return $query->get();

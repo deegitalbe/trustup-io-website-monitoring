@@ -32,8 +32,10 @@ class PageSpeedResponse {
                 ->setJsonData($this->getData());
   }
 
-  public function getReport(): PageSpeedReport
+  public function getReport(): ?PageSpeedReport
   {
+    if($this->response->failed()) return null;
+    
     $this->reportToModel();
     return $this->report;
   }

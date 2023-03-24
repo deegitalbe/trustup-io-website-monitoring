@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Builders\ReportBuilder;
 use App\Http\Services\Enums\StrategyType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+/** @method static ReportBuilder query() */ 
 
 class Report extends Model
 {
@@ -49,8 +53,10 @@ class Report extends Model
         return $this->domain;
     }
 
-    public function scopeWhereStrategy($query, StrategyType $strategyType): Builder
+    public function newModelQuery(): ReportBuilder
     {
-        return $query->where('strategy', $strategyType->value);
+        $eloquentBuilder = new ReportBuilder($this->newBaseQueryBuilder());
+        
+        return $eloquentBuilder->setModel($this);
     }
 }
