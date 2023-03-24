@@ -28,7 +28,6 @@ class AnalyzeDomains extends Command
      */
     public function handle(Monitoring $service)
     {
-        //TODO make progress bar ?
         $service->desktop();
         $service->mobile();
     }

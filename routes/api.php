@@ -11,7 +11,7 @@
 |
 */
 
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('domains', TestController::class);
+Route::get('reports', ReportController::class);
