@@ -1,6 +1,8 @@
 <?php 
 namespace App\Http\Services;
 
+use App\Builders\ReportBuilder;
+use App\Http\Services\Enums\StatsType;
 use App\Http\Services\Enums\StrategyType;
 use App\Models\Report;
 use Carbon\Carbon;
@@ -9,46 +11,34 @@ use Illuminate\Support\Collection;
 class ReportsStatistics
 {
 
-  protected function getReports(?StrategyType $strategyType = null, ?Carbon $startDate = null, ?Carbon $endDate = null): Collection
+  public function __construct(
+    protected ?StrategyType $strategyType,
+    protected ?Carbon $startDate,
+    protected ?Carbon $endDate,
+    protected StatsType $statsType)
+  {
+    
+  }
+
+  protected function getReports(): ReportBuilder
   {
     $query = Report::query();
 
-    if($strategyType){
-        $query->whereStrategy($strategyType);
+    if($this->strategyType){
+        $query->whereStrategy($this->strategyType);
     }
 
-    if($startDate && $endDate){
-        $query->whereDate($startDate, $endDate);
+    if($this->startDate && $this->endDate){
+        $query->whereDate($this->startDate, $this->endDate);
     }
 
-    return $query->get();
+    return $query;
   }
 
-  public function getPerformanceStats(StrategyType $strategyType = null, ?Carbon $startDate = null, ?Carbon $endDate = null): float
+  public function getStats(): float|int
   {
-    $avg = $this->getReports($strategyType, $startDate, $endDate)->avg(function(Report $report){
-      return $report->getPerformanceScore();
-    });
-
-    return $avg;
-  }
-
-  public function getSeoStats(StrategyType $strategyType = null, ?Carbon $startDate = null, ?Carbon $endDate = null): float
-  {
-    $avg = $this->getReports($strategyType, $startDate, $endDate)->avg(function(Report $report){
-      return $report->getSeoScore();
-    });
-
-    return $avg;
-  }
-
-  public function getFirstContentfulPaintStats(StrategyType $strategyType = null, ?Carbon $startDate = null, ?Carbon $endDate = null): int
-  {
-    $avg = $this->getReports($strategyType, $startDate, $endDate)->avg(function(Report $report){
-      return $report->getFirstContentfulPaint();
-    });
-
-    return $avg;
+    $statsColumnName = $this->statsType->value;
+    return $this->getReports()->selectRaw("AVG($statsColumnName) as avg_$statsColumnName")->value("avg_$statsColumnName");
   }
 
 }

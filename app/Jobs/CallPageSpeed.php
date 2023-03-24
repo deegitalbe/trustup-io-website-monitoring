@@ -51,7 +51,7 @@ class CallPageSpeed implements ShouldQueue
         $report = $PageSpeedResponse->getReport();
 
         if(!$report) throw $response->error();
-        //TODO Configure s3
+        //TODO Configure s3 And make the command run everyday
         Storage::put($this->path, $report->getJsonData());
 
         Report::create([
