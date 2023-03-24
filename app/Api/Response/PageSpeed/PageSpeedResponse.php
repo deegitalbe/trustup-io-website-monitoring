@@ -39,4 +39,9 @@ class PageSpeedResponse {
     $this->reportToModel();
     return $this->report;
   }
+
+  public function getResponse(): TryResponseContract
+  {
+    return $this->response;
+  }
 }

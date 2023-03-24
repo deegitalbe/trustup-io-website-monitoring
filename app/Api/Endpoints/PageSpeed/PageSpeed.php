@@ -29,7 +29,7 @@ class PageSpeed
           'url' => $website->getUrl(),
           'strategy' => $strategy->value
         ]);
-        //TODO The exception doesnt appear in db table failed_jobs
+        
         $exception = new PageSpeedException();
         $exception->setWebsite($website);
         

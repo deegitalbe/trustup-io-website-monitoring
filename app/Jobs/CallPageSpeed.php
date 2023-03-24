@@ -45,8 +45,12 @@ class CallPageSpeed implements ShouldQueue
          /** @var PageSpeed */
         $endpoint = app()->make(PageSpeed::class);
 
-        $report = $endpoint->analyze($this->website, $this->strategy)->getReport();
+        $PageSpeedResponse = $endpoint->analyze($this->website, $this->strategy);
 
+        $response = $PageSpeedResponse->getResponse();
+        $report = $PageSpeedResponse->getReport();
+
+        if(!$report) throw $response->error();
         //TODO Configure s3
         Storage::put($this->path, $report->getJsonData());
 
