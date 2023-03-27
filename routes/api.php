@@ -11,10 +11,11 @@
 |
 */
 
-use App\Http\Controllers\IndexStatsController;
-use App\Http\Controllers\ReportController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\PerformanceStatsController;
 
 Route::get('reports', ReportController::class);
 
-Route::get('stats', IndexStatsController::class);
+Route::get('performance-stats', PerformanceStatsController::class);

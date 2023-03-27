@@ -35,10 +35,25 @@ class ReportsStatistics
     return $query;
   }
 
-  public function getStats(): float|int
+  public function getStats(): null|float|int
   {
     $statsColumnName = $this->statsType->value;
     return $this->getReports()->selectRaw("AVG($statsColumnName) as avg_$statsColumnName")->value("avg_$statsColumnName");
+  }
+
+  public function getStartDate(): Carbon
+  {
+    return $this->startDate;
+  }
+
+  public function getEndDate(): Carbon
+  {
+    return $this->endDate;
+  }
+
+  public function getStatsType(): StatsType
+  {
+    return $this->statsType;
   }
 
 }
