@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Http\Services\Enums\StrategyType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use PhpParser\ErrorHandler\Collecting;
 
 class Website 
 {
@@ -46,5 +49,10 @@ class Website
    public function getDomain(): string
    {
     return $this->domain;
+   }
+
+   public function getLastReports(int $number,StrategyType $strategyType): Collection
+   {
+      return Report::where('website_id', $this->getWebsiteId())->where('strategy', $strategyType->value)->orderBy('created_at', 'desc')->take($number)->get();
    }
 }

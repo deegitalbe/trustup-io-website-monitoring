@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PerformanceStatsController;
 use App\Http\Controllers\SeoStatsController;
+use App\Http\Controllers\WebsiteController;
 
 Route::get('reports', ReportController::class);
 
@@ -24,3 +25,5 @@ Route::get('performance-stats', PerformanceStatsController::class);
 Route::get('seo-stats', SeoStatsController::class);
 
 Route::get('firstcontent-stats', FirstContentStatsController::class);
+
+Route::get('websites', WebsiteController::class);
