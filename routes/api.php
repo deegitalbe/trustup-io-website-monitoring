@@ -26,4 +26,6 @@ Route::get('seo-stats', SeoStatsController::class);
 
 Route::get('firstcontent-stats', FirstContentStatsController::class);
 
-Route::get('websites', WebsiteController::class);
+Route::get('websites', [WebsiteController::class, 'index']);
+
+Route::get('websites/{website_id}', [WebsiteController::class , 'show']);

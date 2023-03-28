@@ -9,6 +9,7 @@ class WebsiteDomainResponse{
 
   protected TryResponseContract $response;
   protected Collection $websites;
+  protected Website $website;
 
   public function __construct(TryResponseContract $response)
   {
@@ -18,12 +19,12 @@ class WebsiteDomainResponse{
 
   protected function getData()
   {
-    return collect($this->response->response()->get(true)['data']);
+    return $this->response->response()->get(true)['data'];
   }
 
   protected function mapWebsiteToModel()
   {
-    $this->websites = $this->getData()->map(function($website){
+    $this->websites = collect($this->getData())->map(function($website){
       /** @var Website */
       $websiteModel = app()->make(Website::class);
       $websiteModel->setUrl($website['url'])
@@ -33,9 +34,28 @@ class WebsiteDomainResponse{
     });
   }
 
+  protected function websiteToModel()
+  {
+    $website = $this->getData();
+
+    /** @var Website */
+    $websiteModel = app()->make(Website::class);
+    $websiteModel->setUrl($website['url'])
+                ->setWebsiteId($website['id'])
+                ->setDomain($website['domain']);
+
+    $this->website = $websiteModel;
+  }
+
   public function getWebsites(): Collection
   {
     $this->mapWebsiteToModel();
     return $this->websites;
+  }
+
+  public function getWebsite(): Website
+  {
+    $this->websiteToModel();
+    return $this->website;
   }
 }

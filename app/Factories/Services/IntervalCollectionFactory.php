@@ -12,7 +12,7 @@ class IntervalCollectionFactory
     return $this->mapIntervalToPeriod($periodStart, $periodEnd);
   }
 
-  public function mapIntervalToPeriod(Carbon $periodStart, $periodEnd): Collection
+  public function mapIntervalToPeriod(Carbon $periodStart, Carbon $periodEnd): Collection
   {
     $period = CarbonPeriod::create($periodStart, $periodEnd)->days(1);
     
