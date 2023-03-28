@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use App\Factories\Services\IntervalCollectionFactory;
+use App\Factories\Services\IntervalReportsFactory;
 use App\Http\Services\Enums\StrategyType;
+use App\Http\Services\Interval;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -54,5 +58,31 @@ class Website
    public function getLastReports(int $number,StrategyType $strategyType): Collection
    {
       return Report::where('website_id', $this->getWebsiteId())->where('strategy', $strategyType->value)->orderBy('created_at', 'desc')->take($number)->get();
+   }
+
+   protected function getReportsFromInterval(StrategyType $strategyType, Carbon $startDate, Carbon $endDate): Collection
+   {
+      return Report::where('website_id', $this->getWebsiteId())->where('strategy', $strategyType->value)->whereDate($startDate, $endDate)->get();
+   }
+
+   public function getIntervalReports(StrategyType $strategyType): Collection
+   {
+      $intervalCollectionFactory = app()->make(IntervalCollectionFactory::class);
+      $period = $intervalCollectionFactory->create(now()->subWeek(), now());
+
+      /** @var IntervalReportsFactory */
+      $intervalReportsFactory = app()->make(IntervalReportsFactory::class);
+
+      $intervalReportsCollection = collect();
+
+      $period->each(function(Interval $interval) use ($strategyType, $intervalReportsCollection, $intervalReportsFactory){
+         $intervalReportsCollection->push($intervalReportsFactory->create(
+                                                      $interval->getStart(),
+                                                      $interval->getEnd(),
+                                                      $this->getReportsFromInterval($strategyType, $interval->getStart(), $interval->getEnd())
+                                                   ));
+      });
+
+      return $intervalReportsCollection;
    }
 }

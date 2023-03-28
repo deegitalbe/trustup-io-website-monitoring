@@ -18,7 +18,6 @@ class WebsiteController extends Controller
 
     public function show(Domains $endpoint, int $websiteId)
     {
-        //TODO create model with setter
         $website = $endpoint->show($websiteId)->getWebsite();
 
         return new WebsiteResource($website);
