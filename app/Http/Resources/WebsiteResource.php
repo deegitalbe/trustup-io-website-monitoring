@@ -23,9 +23,9 @@ class WebsiteResource extends JsonResource
             'website_id' => $this->resource->getWebsiteId(),
             'domain' => $this->resource->getDomain(),
             'url' => $this->resource->getUrl(),
-            'last_report_desktop' => ReportResource::collection($this->resource->getLastReports(1, StrategyType::DESKTOP)),
+            'last_report_desktop' => new ReportResource($this->resource->getLastReport(StrategyType::DESKTOP)),
             'last_week_reports_desktop' => IntervalReportsResource::collection($this->resource->getIntervalReports(StrategyType::DESKTOP)),
-            'last_report_mobile' => ReportResource::collection($this->resource->getLastReports(1, StrategyType::MOBILE)),
+            'last_report_mobile' => new ReportResource($this->resource->getLastReport(StrategyType::MOBILE)),
             'last_week_reports_mobile' => IntervalReportsResource::collection($this->resource->getIntervalReports(StrategyType::MOBILE)),
         ];
     }

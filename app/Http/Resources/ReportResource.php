@@ -14,6 +14,17 @@ class ReportResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "website_id" => $this->getWebsiteId(),
+            "domain" => $this->getDomain(),
+            "url" => $this->getUrl(),
+            "performance_score" => $this->getPerformanceScore(),
+            "seo_score" => $this->getSeoScore(),
+            "first_contentful_paint" => $this->getFirstContentfulPaint(),
+            "strategy" => $this->getStrategy(),
+            
+            
+        ];
     }
 }

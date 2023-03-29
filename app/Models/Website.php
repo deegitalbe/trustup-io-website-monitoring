@@ -60,6 +60,11 @@ class Website
       return Report::where('website_id', $this->getWebsiteId())->where('strategy', $strategyType->value)->orderBy('created_at', 'desc')->take($number)->get();
    }
 
+   public function getLastReport(StrategyType $strategyType): ?Report
+   {
+      return $this->getLastReports(1, $strategyType)->first();
+   }
+
    protected function getReportsFromInterval(StrategyType $strategyType, Carbon $startDate, Carbon $endDate): Collection
    {
       return Report::where('website_id', $this->getWebsiteId())->where('strategy', $strategyType->value)->whereDate($startDate, $endDate)->get();

@@ -25,12 +25,12 @@ class Report extends Model
 
     public function getPerformanceScore(): float
     {
-        return $this->performance_score;
+        return $this->performance_score * 100;
     }
 
     public function getSeoScore(): float
     {
-        return $this->seo_score;
+        return $this->seo_score * 100;
     }
 
     public function getStrategy(): string
