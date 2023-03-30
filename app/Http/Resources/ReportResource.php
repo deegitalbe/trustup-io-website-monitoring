@@ -23,6 +23,7 @@ class ReportResource extends JsonResource
             "seo_score" => $this->getSeoScore(),
             "first_contentful_paint" => $this->getFirstContentfulPaint(),
             "strategy" => $this->getStrategy(),
+            "created_at" => $this->created_at
             
             
         ];
