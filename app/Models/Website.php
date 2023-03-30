@@ -84,7 +84,7 @@ class Website
          $intervalReportsCollection->push($intervalReportsFactory->create(
                                                       $interval->getStart(),
                                                       $interval->getEnd(),
-                                                      $this->getReportsFromInterval($strategyType, $interval->getStart(), $interval->getEnd())
+                                                      $this->getReportsFromInterval($strategyType, $interval->getStart(), $interval->getEnd())->first()
                                                    ));
       });
 

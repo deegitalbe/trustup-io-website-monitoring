@@ -11,7 +11,8 @@ class WebsiteController extends Controller
 {
     public function index(Domains $endpoint)
     {
-        $websites = $endpoint->index()->getWebsites();
+        //TODO remove take(5)
+        $websites = $endpoint->index()->getWebsites()->take(5);
 
         return WebsiteResource::collection($websites);
     }

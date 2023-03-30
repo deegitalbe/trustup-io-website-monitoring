@@ -1,13 +1,14 @@
 <?php 
 namespace App\Http\Services;
 
+use App\Models\Report;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class IntervalReports
 {
 
-  public function __construct(protected Carbon $intervalStart, protected Carbon $intervalEnd, protected Collection $reports)
+  public function __construct(protected Carbon $intervalStart, protected Carbon $intervalEnd, protected ?Report $report)
   {
     
   }
@@ -22,9 +23,9 @@ class IntervalReports
     return $this->intervalEnd;
   }
 
-  public function getReports(): Collection
+  public function getReport(): ?Report
   {
-    return $this->reports;
+    return $this->report;
   }
 
 }

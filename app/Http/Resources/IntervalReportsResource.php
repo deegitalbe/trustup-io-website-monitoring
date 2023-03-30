@@ -21,7 +21,7 @@ class IntervalReportsResource extends JsonResource
         return [
             'start_date' => $this->resource->getStart(),
             'end_date' => $this->resource->getEnd(),
-            'reports' => ReportResource::collection($this->resource->getReports()),
+            'report' => new ReportResource($this->resource->getReport()),
         ];
     }
 }
