@@ -53,6 +53,54 @@ class Report extends Model
         return $this->domain;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    public function setPerformanceScore(float $performanceScore): self
+    {
+        $this->performance_score = $performanceScore;
+        return $this;
+    }
+
+    public function setSeoScore(float $seoScore): self
+    {
+        $this->seo_score = $seoScore;
+        return $this;
+    }
+
+    public function setStrategy(StrategyType $strategy): self
+    {
+        $this->strategy = $strategy->value;
+        return $this;
+    }
+
+    public function setFirstContentfulPaint(int $firstcontent): self
+    {
+        $this->first_contentful_paint = $firstcontent;
+        return $this;
+    }
+
+    public function setWebsiteId(int $websiteId): self
+    {
+        $this->website_id = $websiteId;
+        return $this;
+    }
+
+    public function setDomain(string $domain): self
+    {
+        $this->domain = $domain;
+        return $this;
+    }
+
     public function newModelQuery(): ReportBuilder
     {
         $eloquentBuilder = new ReportBuilder($this->newBaseQueryBuilder());
