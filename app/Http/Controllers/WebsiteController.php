@@ -54,10 +54,10 @@ class WebsiteController extends Controller
                             if($request->input('order_by') === OrderByType::DESKTOP_SEO_DESC->value) return $query->orderBy('d_seo_score', 'desc');
                             if($request->input('order_by') === OrderByType::MOBILE_SEO_ASC->value) return $query->orderBy('m_seo_score', 'asc');
                             if($request->input('order_by') === OrderByType::MOBILE_SEO_DESC->value) return $query->orderBy('m_seo_score', 'desc');
-                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_ASC->value) return $query->orderBy('d_first_contentful_score', 'asc');
-                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_DESC->value) return $query->orderBy('d_first_contentful_score', 'desc');
-                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_ASC->value) return $query->orderBy('m_first_contentful_score', 'asc');
-                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_DESC->value) return $query->orderBy('m_first_contentful_score', 'desc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_ASC->value) return $query->orderBy('d_first_contentful_paint', 'asc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_DESC->value) return $query->orderBy('d_first_contentful_paint', 'desc');
+                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_ASC->value) return $query->orderBy('m_first_contentful_paint', 'asc');
+                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_DESC->value) return $query->orderBy('m_first_contentful_paint', 'desc');
                         })
                         ->when($request->get('search'), function ($query) use ($request) {
                             return $query->where('domain', 'LIKE', '%' . $request->input('search') . '%');
