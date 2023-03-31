@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\WebsiteResource;
 use App\Api\Endpoints\WebsiteDomains\Domains;
 use App\Http\Resources\WebsiteIndexResource;
+use App\Http\Services\Enums\OrderByType;
 use App\Models\Report;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +45,25 @@ class WebsiteController extends Controller
                                         ) q
                                         WHERE rn = 1) AS mobile'
                                     ), 'mobile.website_id', '=', 'reports.website_id')
-                        ->get();
+                        ->when($request->get('order_by'), function ($query) use ($request) {
+                            if($request->input('order_by') === OrderByType::DESKTOP_PERFORMANCE_ASC->value) return $query->orderBy('d_performance_score', 'asc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_PERFORMANCE_DESC->value) return $query->orderBy('d_performance_score', 'desc');
+                            if($request->input('order_by') === OrderByType::MOBILE_PERFORMANCE_ASC->value) return $query->orderBy('m_performance_score', 'asc');
+                            if($request->input('order_by') === OrderByType::MOBILE_PERFORMANCE_DESC->value) return $query->orderBy('m_performance_score', 'desc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_SEO_ASC->value) return $query->orderBy('d_seo_score', 'asc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_SEO_DESC->value) return $query->orderBy('d_seo_score', 'desc');
+                            if($request->input('order_by') === OrderByType::MOBILE_SEO_ASC->value) return $query->orderBy('m_seo_score', 'asc');
+                            if($request->input('order_by') === OrderByType::MOBILE_SEO_DESC->value) return $query->orderBy('m_seo_score', 'desc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_ASC->value) return $query->orderBy('d_first_contentful_score', 'asc');
+                            if($request->input('order_by') === OrderByType::DESKTOP_FIRSTCONTENT_DESC->value) return $query->orderBy('d_first_contentful_score', 'desc');
+                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_ASC->value) return $query->orderBy('m_first_contentful_score', 'asc');
+                            if($request->input('order_by') === OrderByType::MOBILE_FIRSTCONTENT_DESC->value) return $query->orderBy('m_first_contentful_score', 'desc');
+                        })
+                        ->when($request->get('search'), function ($query) use ($request) {
+                            return $query->where('domain', 'LIKE', '%' . $request->input('search') . '%');
+                        })
+                        ->paginate(15)
+                        ;
 
                         return WebsiteIndexResource::collection($websites);
     }
