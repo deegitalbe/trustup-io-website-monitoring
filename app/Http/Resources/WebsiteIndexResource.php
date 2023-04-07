@@ -33,7 +33,7 @@ class WebsiteIndexResource extends JsonResource
                                                                     ->setWebsiteId($this->website_id)
                                                                     ->setDomain($this->domain)
                                                                     ->setUrl($this->url)
-                                                                    ->setStrategy(StrategyType::from($this->d_strategy))
+                                                                    ->setStrategy(StrategyType::tryFrom($this->d_strategy))
                                                                     ),
             'last_report_mobile' => new ReportResource($mobileReport->setId($this->m_id)
                                                                     ->setCreatedAt($this->m_created_at)
@@ -43,7 +43,7 @@ class WebsiteIndexResource extends JsonResource
                                                                     ->setWebsiteId($this->website_id)
                                                                     ->setDomain($this->domain)
                                                                     ->setUrl($this->url)
-                                                                    ->setStrategy(StrategyType::from($this->m_strategy))
+                                                                    ->setStrategy(StrategyType::tryFrom($this->m_strategy))
                                                                     ),
         ];
     }

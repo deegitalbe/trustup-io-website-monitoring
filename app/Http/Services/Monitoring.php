@@ -66,8 +66,8 @@ class Monitoring {
   {
      /** @var Domains */
     $endpoint = app()->make(Domains::class);
-    //TODO remove take(5)
-    $this->websites = $endpoint->index()->getWebsites()->take(5);
+    
+    $this->websites = $endpoint->index()->getWebsites();
     
     return $this;
   }
