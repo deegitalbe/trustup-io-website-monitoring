@@ -34,7 +34,7 @@ resource "digitalocean_database_db" "laravel-in-kubernetes" {
 # We also use Native Password auth, as it works better with current Laravel versions
 resource "digitalocean_database_user" "laravel-in-kubernetes" {
   cluster_id = digitalocean_database_cluster.laravel-in-kubernetes.id
-  name = "${var.trustup_io_app_key}-user"
+  name = "trustup-io-user"
 }
 
 # We want to allow access to the database from our Kubernetes cluster

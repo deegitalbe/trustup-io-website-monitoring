@@ -14,9 +14,9 @@ data:
   LOG_LEVEL: "debug"
 
   DB_CONNECTION: "mysql"
-  DB_HOST: ""
-  DB_PORT: ""
-  DB_DATABASE: ""
+  DB_HOST: "trustup-io-website-monitoring-do-user-3877774-0.b.db.ondigitalocean.com"
+  DB_PORT: "25060"
+  DB_DATABASE: "trustup-io-website-monitoring-db"
 
   BROADCAST_DRIVER: "log"
   CACHE_DRIVER: "file"
@@ -38,6 +38,11 @@ data:
   AWS_DEFAULT_REGION: "us-east-1"
   AWS_BUCKET: ""
   AWS_USE_PATH_STYLE_ENDPOINT: "false"
+
+  DO_DEFAULT_REGION: "ams3"
+  DO_BUCKET: "trustup-io-website-monitoring"
+  DO_ENDPOINT: "https://ams3.digitaloceanspaces.com/"
+  DO_USE_PATH_STYLE_ENDPOINT: "false"
 
   PUSHER_APP_ID: ""
   PUSHER_HOST: ""
