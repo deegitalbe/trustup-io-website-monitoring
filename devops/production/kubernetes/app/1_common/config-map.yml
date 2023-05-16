@@ -7,16 +7,16 @@ data:
   APP_NAME: "trustup-io-website-monitoring"
   APP_ENV: "production"
   APP_DEBUG: "true"
-  APP_URL: "website.monitoring.trustup.io"
+  APP_URL: "monitoring.website.trustup.io"
 
   LOG_CHANNEL: "flare"
   LOG_DEPRECATIONS_CHANNEL: "null"
   LOG_LEVEL: "debug"
 
   DB_CONNECTION: "mysql"
-  DB_HOST: "trustup-io-website-monitoring-do-user-3877774-0.b.db.ondigitalocean.com"
-  DB_PORT: "25060"
-  DB_DATABASE: "trustup-io-website-monitoring-db"
+  DB_HOST: ""
+  DB_PORT: ""
+  DB_DATABASE: ""
 
   BROADCAST_DRIVER: "log"
   CACHE_DRIVER: "file"
@@ -39,11 +39,6 @@ data:
   AWS_BUCKET: ""
   AWS_USE_PATH_STYLE_ENDPOINT: "false"
 
-  DO_DEFAULT_REGION: "ams3"
-  DO_BUCKET: "trustup-io-website-monitoring"
-  DO_ENDPOINT: "https://ams3.digitaloceanspaces.com/"
-  DO_USE_PATH_STYLE_ENDPOINT: "false"
-
   PUSHER_APP_ID: ""
   PUSHER_HOST: ""
   PUSHER_PORT: "443"
@@ -57,16 +52,13 @@ data:
   VITE_PUSHER_APP_CLUSTER: "${PUSHER_APP_CLUSTER}"
 
   VITE_APP_URL: "${APP_URL}"
-  VITE_TRUSTUP_VOIP: "https://voip.trustup.io"
-  VITE_TRUSTUP_BE: "https://www.trustup.be"
 
   SCOUT_DRIVER: "meilisearch"
   MEILISEARCH_HOST: "http://meilisearch:7700"
 
-  TRUSTUP_URL: "https://www.trustup.be"
   TRUSTUP_MESSAGING_APP_KEY: "trustup-io-website-monitoring"
   TRUSTUP_MODEL_BROADCAST_APP_KEY: "trustup-io-website-monitoring"
   TRUSTUP_MEDIA_IO_URL: "https://media.trustup.io"
   TRUSTUP_MESSAGING_API_URL: "https://messaging.trustup.io/api"
   TRUSTUP_IO_AUTHENTIFICATION_URL: "https://auth.trustup.io"
-  TRUSTUP_PRO_URL: "https://www.trustup.pro"
+  TRUSTUP_APP_KEY: "trustup-io-website-monitoring"

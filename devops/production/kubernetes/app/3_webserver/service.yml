@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: app
-  name: laravel-in-kubernetes-fpm
+  name: laravel-in-kubernetes-webserver
 spec:
   selector:
     tier: backend
-    layer: fpm
+    layer: webserver
   ports:
     - protocol: TCP
-      port: 9000
-      targetPort: 9000
+      port: 80
+      targetPort: 80

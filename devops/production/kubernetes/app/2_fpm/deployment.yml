@@ -23,7 +23,7 @@ spec:
     spec:
       initContainers:
         - name: migrations
-          image: henrotaym/trustup-io-website-monitoring-cli:0.0.1
+          image: "henrotaym/trustup-io-website-monitoring-cli:0.0.1"
           command:
             - php
           args:
@@ -37,12 +37,15 @@ spec:
                 name: laravel-in-kubernetes
       containers:
         - name: fpm
-          image: henrotaym/trustup-io-website-monitoring-fpm:0.0.1
+          image: "henrotaym/trustup-io-website-monitoring-fpm:d4304bd05f8ada0777c3dcb38d9ade915b3ebe81"
           command: ["/bin/sh"]
-          args: ["-c", "php artisan event:cache && \
-            php artisan route:cache && \
-            php artisan view:cache && \
-            exec php-fpm"]
+          args: [
+              "-c",
+              "php artisan event:cache && \
+              php artisan route:cache && \
+              php artisan view:cache && \
+              exec php-fpm",
+            ]
           ports:
             - containerPort: 9000
           envFrom:
