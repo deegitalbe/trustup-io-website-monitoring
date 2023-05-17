@@ -71,6 +71,4 @@ jobs:
         run: doctl k8s cluster kubeconfig save ${{ secrets.DIGITALOCEAN_KUBERNETES_CLUSTER_ID }}
       - 
         name: Trigger kubernetes deployment
-        run: |
-          export APP_VERSION=${{ github.sha }}
-          kubectl apply -k devops/production/kubernetes
+        run: APP_VERSION=${{ github.sha }} kubectl apply -k devops/production/kubernetes
