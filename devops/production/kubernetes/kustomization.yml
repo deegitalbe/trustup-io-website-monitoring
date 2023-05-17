@@ -18,7 +18,7 @@ replacements:
           # In each Deployment resource …
           kind: Deployment
         fieldPaths:
-          # - spec.template.spec.containers.[name=cron].image
+          - spec.template.spec.containers.[name=cron].image
           - spec.template.spec.containers.[name=fpm].image
           - spec.template.spec.containers.[name=queue-worker].image
           - spec.template.spec.containers.[name=webserver].image

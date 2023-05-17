@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: queue-worker
-          image: "henrotaym/trustup-io-website-monitoring-cli:0.0.1"
+          image: "henrotaym/trustup-io-website-monitoring-cli:${IMAGE_TAG}"
           command:
             - php
           args:

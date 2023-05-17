@@ -23,7 +23,7 @@ spec:
     spec:
       initContainers:
         - name: migrations
-          image: "henrotaym/trustup-io-website-monitoring-cli:0.0.1"
+          image: "henrotaym/trustup-io-website-monitoring-cli:${IMAGE_TAG}"
           command:
             - php
           args:
@@ -37,7 +37,7 @@ spec:
                 name: laravel-in-kubernetes
       containers:
         - name: fpm
-          image: "henrotaym/trustup-io-website-monitoring-fpm:d4304bd05f8ada0777c3dcb38d9ade915b3ebe81"
+          image: "henrotaym/trustup-io-website-monitoring-fpm:${IMAGE_TAG}"
           command: ["/bin/sh"]
           args: [
               "-c",

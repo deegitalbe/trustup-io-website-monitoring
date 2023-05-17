@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: webserver
-          image: "henrotaym/trustup-io-website-monitoring-web:0.0.1"
+          image: "henrotaym/trustup-io-website-monitoring-web:${IMAGE_TAG}"
           ports:
             - containerPort: 80
           env:

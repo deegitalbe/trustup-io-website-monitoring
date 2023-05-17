@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: cron
-          image: "henrotaym/trustup-io-website-monitoring-cron:0.0.1"
+          image: "henrotaym/trustup-io-website-monitoring-cron:${IMAGE_TAG}"
           envFrom:
             - configMapRef:
                 name: laravel-in-kubernetes
