@@ -24,4 +24,4 @@ jobs:
         run: doctl k8s cluster kubeconfig save ${{ secrets.DIGITALOCEAN_KUBERNETES_CLUSTER_ID }}
       - 
         name: Trigger kubernetes deployment
-        run: kubectl version --short
+        run: APP_VERSION=5750e4b kubectl kustomize ./devops/production/kubernetes
