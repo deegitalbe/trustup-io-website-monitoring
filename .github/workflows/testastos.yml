@@ -18,7 +18,7 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          version: "1.24"
+          version: "1.79.0"
       - 
         name: Save DigitalOcean kubeconfig
         run: doctl k8s cluster kubeconfig save ${{ secrets.DIGITALOCEAN_KUBERNETES_CLUSTER_ID }}
