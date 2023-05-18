@@ -24,8 +24,8 @@ jobs:
         name: Retrieve load balancer external ip
         id: load-balancer-ip
         run: |
-          $ip="$(kubectl get services --namespace traefik traefik --output jsonpath='{.status.loadBalancer.ingress[0].ip}')"
+          echo "LOAD_BALANCER_IP=$(kubectl get services --namespace traefik traefik --output jsonpath='{.status.loadBalancer.ingress[0].ip}') >> $GITHUB_OUTPUT
       - 
         name: Display load balancer IP
         run: |
-          echo "The load balancer IP is [${{ steps.load-balancer-ip.outputs.external-ip }}]"
+          echo "The load balancer IP is [${{ steps.load-balancer-ip.outputs.LOAD_BALANCER_IP }}]"
