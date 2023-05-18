@@ -22,10 +22,18 @@ jobs:
         run: doctl k8s cluster kubeconfig save ${{ secrets.DIGITALOCEAN_KUBERNETES_CLUSTER_ID }}
       -
         name: Retrieve load balancer external ip
-        id: load-balancer-ip
+        id: load_balancer_ip
         run: |
-          echo "LOAD_BALANCER_IP=$(kubectl get services --namespace traefik traefik --output jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> $GITHUB_OUTPUT
+          echo "external_ip=$(kubectl get services --namespace traefik traefik --output jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> $GITHUB_OUTPUT
       - 
-        name: Display load balancer IP
-        run: |
-          echo "The load balancer IP is [${{ steps.load-balancer-ip.outputs.LOAD_BALANCER_IP }}]"
+        name: Update DNS record
+        uses: rez0n/create-dns-record@v2.1
+        with:
+          type: "A"
+          name: "monitoring.website.trustup.io"
+          content: ${{ steps.load_balancer_ip.outputs.external_ip }}
+          ttl: 1
+          proxied: true
+          token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          zone: ${{ secrets.CLOUDFLARE_DNS_ZONE_TRUSTUP_IO }}
+
