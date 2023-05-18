@@ -7,6 +7,7 @@ on:
 jobs:
   generate-a-secret-output:
     runs-on: ubuntu-latest
+    environment: "production"
     steps:
       - 
         name: Checkout repository
