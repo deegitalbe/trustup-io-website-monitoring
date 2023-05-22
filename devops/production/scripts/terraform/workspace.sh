@@ -73,7 +73,7 @@ function retrieveWorkspace() {
 }
 
 projectId="$(retrieveProject $1 $3)"
-retrieveWorkspace $projectId $1 $2 $3
+retrieveWorkspace $projectId $2 $3
 
 # example execution
 # ./devops/production/kubernetes/scripts/terraform/workspace.sh trustup-io-testing production

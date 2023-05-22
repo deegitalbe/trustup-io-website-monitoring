@@ -27,12 +27,13 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Create workspace
+        # TODO DONT USE HARDCODED PROJECT trustup-io-website-monitoring
         run: |
           chmod +x ./devops/production/scripts/terraform/workspace.sh
           ./devops/production/scripts/terraform/workspace.sh \
             trustup-io-website-monitoring \
             ${{ env.TF_WORKSPACE }} \
-            ${{ secrets.TERRAFORM_TEAM_API_TOKEN }}
+            ${{ secrets.TERRAFORM_API_TOKEN }}
         shell: bash
       - 
         name: Upload Configuration
