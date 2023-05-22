@@ -31,10 +31,10 @@ spec:
             - migrate
             - --force
           envFrom:
-            - configMapRef:
-                name: laravel-in-kubernetes
             - secretRef:
-                name: laravel-in-kubernetes
+                name: trustup-io-app-secret
+            - secretRef:
+                name: trustup-io-app-commons-secret
       containers:
         - name: fpm
           image: "henrotaym/trustup-io-website-monitoring-fpm:${IMAGE_TAG}"
@@ -49,7 +49,7 @@ spec:
           ports:
             - containerPort: 9000
           envFrom:
-            - configMapRef:
-                name: laravel-in-kubernetes
             - secretRef:
-                name: laravel-in-kubernetes
+                name: trustup-io-app-secret
+            - secretRef:
+                name: trustup-io-app-commons-secret

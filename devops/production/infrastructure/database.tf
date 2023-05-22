@@ -14,11 +14,11 @@ locals {
 # based on Mysql 8, which is the version DigitalOcean provides.
 # You can switch this out for Postgres by changing the `locals.` pointer to point at postgres.
 resource "digitalocean_database_cluster" "laravel-in-kubernetes" {
-  name = var.trustup_io_app_key
+  name = data.doppler_secrets.app.trustup_app_key
   engine = local.mysql.engine # Replace with `locals.postgres.engine` if using postgres
   version = local.mysql.version # Replace with `locals.postgres.version` if using postgres
   size = "db-s-1vcpu-1gb"
-  region = var.do_region
+  region = data.doppler_secrets.commons.digitalocean_region
   node_count = 1
 }
 
@@ -26,7 +26,7 @@ resource "digitalocean_database_cluster" "laravel-in-kubernetes" {
 # This way we can share the cluster resources, but have multiple separate databases.
 resource "digitalocean_database_db" "laravel-in-kubernetes" {
   cluster_id = digitalocean_database_cluster.laravel-in-kubernetes.id
-  name = "${var.trustup_io_app_key}-db"
+  name = "${data.doppler_secrets.app.trustup_app_key}-db"
 }
 
 # We want to create a separate user for our application,

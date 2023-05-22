@@ -4,12 +4,8 @@ terraform {
       source = "digitalocean/digitalocean"
       version = "~> 2.11"
     }
-  }
-  cloud {
-    organization = "deegital"
-
-    workspaces {
-      name = "trustup-io-website-monitoring"
+    doppler = {
+      source = "DopplerHQ/doppler"
     }
   }
 }

@@ -1,6 +1,6 @@
 resource "digitalocean_spaces_bucket" "main" {
-  name   = var.trustup_io_app_key
-  region = var.do_region
+  name   = data.doppler_secrets.app.trustup_app_key
+  region = data.doppler_secrets.commons.digitalocean_region
 
   cors_rule {
     allowed_methods = ["GET"]

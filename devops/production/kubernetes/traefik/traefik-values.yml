@@ -61,13 +61,13 @@ env:
   - name: CF_API_EMAIL
     valueFrom:
       secretKeyRef:
-        key: email
-        name: cloudflare-credentials
+        name: trustup-io-ci-commons-secret
+        key: CLOUDFLARE_API_EMAIL
   - name: CF_API_KEY
     valueFrom:
       secretKeyRef:
-        key: apiKey
-        name: cloudflare-credentials
+        name: trustup-io-ci-commons-secret
+        key: CLOUDFLARE_API_TOKEN
 
 # Disable Dashboard
 ingressRoute:
