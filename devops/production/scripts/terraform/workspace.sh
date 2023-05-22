@@ -2,7 +2,7 @@
 
 function retrieveExistingProject() {
   echo "$(curl \
-    --header "Authorization: Bearer B86vwAlTkSzRhA.atlasv1.TL5aoRvjjIiH52MzGLy0l9yOnL8xUvoD7Q2Czn98HGsGC2mEvU9EJBPad0VBcmymDeA" \
+    --header "Authorization: Bearer $2" \
     --header "Content-Type: application/vnd.api+json" \
     https://app.terraform.io/api/v2/organizations/deegital/projects?filter[names]=$1 \
     | jq -r '.data[0].id')"
@@ -11,7 +11,7 @@ function retrieveExistingProject() {
 function createNewProject() {
   echo "$(curl \
     --request POST \
-    --header "Authorization: Bearer B86vwAlTkSzRhA.atlasv1.TL5aoRvjjIiH52MzGLy0l9yOnL8xUvoD7Q2Czn98HGsGC2mEvU9EJBPad0VBcmymDeA" \
+    --header "Authorization: Bearer $2" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": {"attributes": {"name": "'$1'"}, "type": "projects"}}' \
     https://app.terraform.io/api/v2/organizations/deegital/projects \
@@ -19,14 +19,14 @@ function createNewProject() {
 }
 
 function retrieveProject() {
-  id="$(retrieveExistingProject $1)"
+  id="$(retrieveExistingProject $1 $2)"
 
   if [[ ! $id == null ]]
     then echo $id
       return
   fi
 
-  id="$(createNewProject $1)"
+  id="$(createNewProject $1 $2)"
 
   if [[ $id == null ]]
     then exit 1
@@ -38,7 +38,7 @@ function retrieveProject() {
 
 function retrieveExistingWorkspace() {
   echo "$(curl \
-    --header "Authorization: Bearer B86vwAlTkSzRhA.atlasv1.TL5aoRvjjIiH52MzGLy0l9yOnL8xUvoD7Q2Czn98HGsGC2mEvU9EJBPad0VBcmymDeA" \
+    --header "Authorization: Bearer $3" \
     --header "Content-Type: application/vnd.api+json" \
     "https://app.terraform.io/api/v2/organizations/deegital/workspaces?filter[project][id]=$1&search[name]=$2" \
     | jq -r '.data[0].id')"
@@ -47,7 +47,7 @@ function retrieveExistingWorkspace() {
 function createNewWorkspace() {
   echo "$(curl \
     --request POST \
-    --header "Authorization: Bearer B86vwAlTkSzRhA.atlasv1.TL5aoRvjjIiH52MzGLy0l9yOnL8xUvoD7Q2Czn98HGsGC2mEvU9EJBPad0VBcmymDeA" \
+    --header "Authorization: Bearer $3" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": {"attributes": {"name": "'$2'"}, "relationships": {"project": {"data": {"id": "'$1'"}}}, "type": "workspaces"}}' \
     https://app.terraform.io/api/v2/organizations/deegital/workspaces \
@@ -55,14 +55,14 @@ function createNewWorkspace() {
 }
 
 function retrieveWorkspace() {
-  id="$(retrieveExistingWorkspace $1 $2)"
+  id="$(retrieveExistingWorkspace $1 $2 $3)"
 
   if [[ ! $id == null ]]
     then echo $id
       return
   fi
 
-  id="$(createNewWorkspace $1 $2)"
+  id="$(createNewWorkspace $1 $2 $3)"
 
   if [[ $id == null ]]
     then exit 1
@@ -72,8 +72,8 @@ function retrieveWorkspace() {
   echo $id
 }
 
-projectId="$(retrieveProject $1)"
-retrieveWorkspace $projectId $1-$2
+projectId="$(retrieveProject $1 $3)"
+retrieveWorkspace $projectId $1 $2 $3
 
 # example execution
 # ./devops/production/kubernetes/scripts/terraform/workspace.sh trustup-io-testing production
