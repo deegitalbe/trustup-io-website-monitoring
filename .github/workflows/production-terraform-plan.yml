@@ -7,8 +7,8 @@ env:
   TF_CLOUD_ORGANIZATION: "deegital"
   TF_API_TOKEN: "${{ secrets.TERRAFORM_API_TOKEN }}"
   TF_WORKSPACE: "${{ secrets.TRUSTUP_APP_KEY }}"
-  TF_VAR_doppler_ci_commons_token: "${{ secrets.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
-  TF_VAR_doppler_ci_app_token: "${{ secrets.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_APP_CI }}"
+  TF_VAR_doppler_ci_commons_token: "\"ami-abc123\""
+  TF_VAR_doppler_ci_app_token: "\"ami-abc123\""
   TF_CONFIG_DIRECTORY: "./devops/production/infrastructure"
 
 jobs:
