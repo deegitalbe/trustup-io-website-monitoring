@@ -4,7 +4,7 @@ function retrieveExistingProject() {
   echo "$(curl \
     --header "Authorization: Bearer $2" \
     --header "Content-Type: application/vnd.api+json" \
-    https://app.terraform.io/api/v2/organizations/deegital/projects?filter[names]=$1 \
+    "https://app.terraform.io/api/v2/organizations/deegital/projects?filter%5Bnames%5D=$1" \
     | jq -r '.data[0].id')"
 }
 
@@ -14,7 +14,7 @@ function createNewProject() {
     --header "Authorization: Bearer $2" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": {"attributes": {"name": "'$1'"}, "type": "projects"}}' \
-    https://app.terraform.io/api/v2/organizations/deegital/projects \
+    "https://app.terraform.io/api/v2/organizations/deegital/projects" \
     | jq -r '.data.id')"
 }
 
@@ -40,7 +40,7 @@ function retrieveExistingWorkspace() {
   echo "$(curl \
     --header "Authorization: Bearer $3" \
     --header "Content-Type: application/vnd.api+json" \
-    "https://app.terraform.io/api/v2/organizations/deegital/workspaces?filter[project][id]=$1&search[name]=$2" \
+    "https://app.terraform.io/api/v2/organizations/deegital/workspaces?filter%5Bproject%5D%5Bid%5D=$1&search%5Bname%5D=$2" \
     | jq -r '.data[0].id')"
 }
 
@@ -50,7 +50,7 @@ function createNewWorkspace() {
     --header "Authorization: Bearer $3" \
     --header "Content-Type: application/vnd.api+json" \
     --data '{"data": {"attributes": {"name": "'$2'"}, "relationships": {"project": {"data": {"id": "'$1'"}}}, "type": "workspaces"}}' \
-    https://app.terraform.io/api/v2/organizations/deegital/workspaces \
+    "https://app.terraform.io/api/v2/organizations/deegital/workspaces" \
     | jq -r '.data.id')"
 }
 

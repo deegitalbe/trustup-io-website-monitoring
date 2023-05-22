@@ -26,6 +26,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       - 
+        name: 'Setup jq'
+        uses: dcarbone/install-jq-action@v1.0.1
+      - 
         name: Create workspace
         # TODO DONT USE HARDCODED PROJECT trustup-io-website-monitoring
         run: |
