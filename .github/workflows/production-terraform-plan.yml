@@ -9,6 +9,7 @@ env:
   TF_WORKSPACE: "${{ secrets.TRUSTUP_APP_KEY }}"
   TF_VAR_doppler_ci_commons_token: "\"${{ secrets.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS }}\""
   TF_VAR_doppler_ci_app_token: "\"${{ secrets.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_APP_CI }}\""
+  TF_VAR_digitalocean_api_token: "\"${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}\""
   TF_CONFIG_DIRECTORY: "./devops/production/infrastructure"
 
 jobs:
