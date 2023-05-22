@@ -23,19 +23,19 @@ jobs:
       - 
         name: Checkout
         uses: actions/checkout@v3
-      - 
-        name: 'Setup jq'
-        uses: dcarbone/install-jq-action@v1.0.1
-      - 
-        name: Create workspace
-        # TODO DONT USE HARDCODED PROJECT trustup-io-website-monitoring
-        run: |
-          chmod +x ./devops/production/scripts/terraform/workspace.sh
-          ./devops/production/scripts/terraform/workspace.sh \
-            trustup-io-website-monitoring \
-            ${{ env.TF_WORKSPACE }} \
-            ${{ secrets.TERRAFORM_API_TOKEN }}
-        shell: bash
+      # - 
+      #   name: 'Setup jq'
+      #   uses: dcarbone/install-jq-action@v1.0.1
+      # - 
+      #   name: Create workspace
+      #   # TODO DONT USE HARDCODED PROJECT trustup-io-website-monitoring
+      #   run: |
+      #     chmod +x ./devops/production/scripts/terraform/workspace.sh
+      #     ./devops/production/scripts/terraform/workspace.sh \
+      #       trustup-io-website-monitoring \
+      #       ${{ env.TF_WORKSPACE }} \
+      #       ${{ secrets.TERRAFORM_API_TOKEN }}
+      #   shell: bash
       - 
         name: Upload Configuration
         uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
