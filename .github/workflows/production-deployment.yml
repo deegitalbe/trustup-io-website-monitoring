@@ -1,0 +1,86 @@
+name: "production-deployment"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: "production"
+    steps:
+      - 
+        name: Checkout repository
+        uses: actions/checkout@v3
+      - 
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - 
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - 
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Build and push cli image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.production
+          target: cli
+          push: true
+          tags: "henrotaym/trustup-io-website-monitoring-cli:${{ github.sha }}"
+      - 
+        name: Build and push cron image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.production
+          target: cron
+          push: true
+          tags: "henrotaym/trustup-io-website-monitoring-cron:${{ github.sha }}"
+      - 
+        name: Build and push fpm image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.production
+          target: fpm_server
+          push: true
+          tags: "henrotaym/trustup-io-website-monitoring-fpm:${{ github.sha }}"
+      - 
+        name: Build and push web image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.production
+          target: web_server
+          push: true
+          tags: "henrotaym/trustup-io-website-monitoring-web:${{ github.sha }}"
+      - 
+        name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - 
+        name: Save DigitalOcean kubeconfig
+        run: doctl k8s cluster kubeconfig save ${{ secrets.DIGITALOCEAN_KUBERNETES_CLUSTER_ID }}
+      -
+        name: Apply config map
+        run: kubectl apply -f devops/production/kubernetes/app/1_common/config-map.yml
+      -
+        name: Trigger kubernetes deployment
+        uses: swdotcom/update-and-apply-kubernetes-configs@v1
+        with:
+          k8-config-file-paths: |
+            devops/production/kubernetes/app/2_fpm/deployment.yml
+            devops/production/kubernetes/app/3_webserver/deployment.yml
+            devops/production/kubernetes/app/5_queue-workers/deployment-default.yml
+            devops/production/kubernetes/app/6_cron/deployment.yml
+          replacement-method: defined
+        env:
+          IMAGE_TAG: ${{ github.sha }}
