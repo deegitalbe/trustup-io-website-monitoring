@@ -6,7 +6,7 @@ This package is used to scaffold a preconfigured monolith application.
 
 ### Search and replace
 
-Search for those values and replace them with desired values.
+Search for those values and replace them with desired values
 
 ```shell
 monitoring.trustup.io.test
