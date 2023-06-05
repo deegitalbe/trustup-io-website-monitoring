@@ -10,7 +10,7 @@ defaults:
 jobs:
   testing_config:
     env: 
-      TF_VAR_DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}"
+      TF_VAR_DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
     runs-on: ubuntu-latest
     steps:
       - 
