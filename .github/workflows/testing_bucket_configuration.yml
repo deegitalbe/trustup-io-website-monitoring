@@ -25,5 +25,5 @@ jobs:
       -
         name: Terraform plan
         run: /
-          terraform -chdir=devops/bucket plan
+          terraform plan
       
