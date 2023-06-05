@@ -19,7 +19,7 @@ terraform {
 }
 
 provider "doppler" {
-  doppler_token = "dp.st.github.YPv38rrWbfOMPvEh2akVv5dQHsHD8k5L7Xdajazivm7"
+  doppler_token = var.DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS
   alias = "ci_commons"
 }
 
@@ -31,4 +31,8 @@ provider "digitalocean" {
   token = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_ACCESS_TOKEN
   spaces_access_id  = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_SPACES_ACCESS_KEY_ID
   spaces_secret_key = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY
+}
+
+variable "DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS" {
+  type = string
 }

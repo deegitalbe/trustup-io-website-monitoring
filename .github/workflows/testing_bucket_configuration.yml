@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - "**"
-
+defaults:
+  run:
+    working-directory: devops/bucket
 jobs:
   testing_config:
+    env: 
+      TF_VAR_DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS: "${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}"
     runs-on: ubuntu-latest
     steps:
       - 
@@ -18,12 +22,11 @@ jobs:
       -
         name: Terraform init
         run: |
-          terraform -chdir="devops/bucket" init \
+          terraform init \
             -backend-config="access_key=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}" \
             -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
             -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}"
       -
         name: Terraform plan
-        run: /
-          terraform plan
+        run: terraform plan
       
