@@ -1,6 +1,18 @@
+data "digitalocean_kubernetes_versions" "kubernetes-version" {
+  version_prefix = "1.24."
+}
+
+data "digitalocean_sizes" "small" {
+  filter {
+    key    = "slug"
+    values = ["s-1vcpu-2gb"]
+  }
+}
+
 resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
-  name = data.doppler_secrets.app.map.TRUSTUP_APP_KEY
-  region = data.doppler_secrets.commons.map.DIGITALOCEAN_CLUSTER_REGION
+  # name = data.doppler_secrets.app.map.TRUSTUP_APP_KEY
+  name = var.TRUSTUP_APP_KEY_SUFFIXED
+  region = data.doppler_secrets.ci_commons.map.DIGITALOCEAN_CLUSTER_REGION
 
   # Latest patched version of DigitalOcean Kubernetes.
   # We do not want to update minor or major versions automatically.
@@ -16,7 +28,8 @@ resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
   }
 
   node_pool {
-    name = data.doppler_secrets.app.map.TRUSTUP_APP_KEY
+    # name = data.doppler_secrets.app.map.TRUSTUP_APP_KEY
+    name = var.TRUSTUP_APP_KEY_SUFFIXED
     size = "${element(data.digitalocean_sizes.small.sizes, 0).slug}"
     node_count = 1
     # We can autoscale our cluster according to use, and if it gets high,
@@ -31,5 +44,17 @@ resource "digitalocean_kubernetes_cluster" "laravel-in-kubernetes" {
       pool = "default"
       size = "small"
     }
+  }
+}
+
+resource "kubernetes_namespace" "app" {
+  metadata {
+    name = "app"
+  }
+}
+
+resource "kubernetes_namespace" "traefik" {
+  metadata {
+    name = "traefik"
   }
 }

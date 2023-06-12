@@ -8,7 +8,7 @@ function addProjectEnv() {
   project=$1
   doppler secrets download \
     --project $project \
-    --config prd \
+    --config dev \
     --no-file \
     --format env | grep -v '^DOPPLER_' \
     >> .env.docker

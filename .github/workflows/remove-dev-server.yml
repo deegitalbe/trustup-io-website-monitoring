@@ -1,0 +1,103 @@
+name: "Remove dev server"
+
+on:
+  delete:
+    branches:
+      - dev/**
+
+jobs:
+  prepare_variables:
+    name: "Preparing terraform variables"
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Checkout repository
+      uses: actions/checkout@v3
+    -
+      name: Prepare terraform variables
+      id: terraform_variables
+      uses: henrotaym/prepare-terraform-variables-action@v2
+      with:
+        app_key: ${{ github.event.repository.name }}
+        github_branch: ${{ github.event.ref }}
+    outputs:
+      DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: ${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}
+      TRUSTUP_APP_KEY: ${{ steps.terraform_variables.outputs.trustup_app_key }}
+      TRUSTUP_APP_KEY_SUFFIX: ${{ steps.terraform_variables.outputs.trustup_app_key_suffix }}
+      TRUSTUP_APP_KEY_SUFFIXED: ${{ steps.terraform_variables.outputs.trustup_app_key_suffixed }}
+      APP_URL: ${{ steps.terraform_variables.outputs.app_url }}
+      APP_ENVIRONMENT: ${{ steps.terraform_variables.outputs.app_environment }}
+      CLOUDFLARE_ZONE_SECRET: ${{ steps.terraform_variables.outputs.cloudflare_zone_secret }}
+
+  delete_app:
+    name: "Delete app in current environment"
+    runs-on: ubuntu-latest
+    needs: prepare_variables
+    defaults:
+      run:
+        working-directory: devops/infrastructure/app
+    env:
+      TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS="${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
+      TF_VAR_TRUSTUP_APP_KEY="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
+      TF_VAR_TRUSTUP_APP_KEY_SUFFIX="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIX }}"
+      TF_VAR_TRUSTUP_APP_KEY_SUFFIXED="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
+      TF_VAR_DOCKER_IMAGE_TAG="${{ github.sha }}"
+      TF_VAR_APP_URL="${{ jobs.prepare_variables.outputs.APP_URL }}"
+      TF_VAR_APP_ENVIRONMENT="${{ jobs.prepare_variables.outputs.APP_ENVIRONMENT }}"
+      TF_VAR_CLOUDFLARE_ZONE_SECRET="${{ jobs.prepare_variables.outputs.CLOUDFLARE_ZONE_SECRET }}"
+    steps:
+      - 
+        name: Checkout repository
+        uses: actions/checkout@v3
+      -
+        name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+      -
+        name: Terraform init
+        run: |
+          terraform init \
+            -backend-config="access_key=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}" \
+            -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
+            -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}"
+            -backend-config="key=${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.tfstate"
+      -
+        name: Terraform plan
+        run: terraform plan -destroy
+      # -
+      #   name: Terraform destroy
+      #   run: terraform destroy -auto-approve
+  
+  delete_doppler_config:
+    name: "Delete current environment doppler config"
+    runs-on: ubuntu-latest
+    needs:
+      - prepare_variables
+      - delete_app
+    defaults:
+      run:
+        working-directory: devops/infrastructure/environments
+    env:
+      TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS="${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
+      TF_VAR_TRUSTUP_APP_KEY="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
+      TF_VAR_DEV_ENVIRONMENT_TO_REMOVE="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
+    steps:
+      - 
+        name: Checkout repository
+        uses: actions/checkout@v3
+      -
+        name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+      -
+        name: Terraform init
+        run: |
+          terraform init \
+            -backend-config="access_key=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}" \
+            -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
+            -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}"
+            -backend-config="key=${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments.tfstate"
+      -
+        name: Terraform plan
+        run: terraform plan -destroy
+      # -
+      #   name: Terraform destroy
+      #   run: terraform destroy -auto-approve

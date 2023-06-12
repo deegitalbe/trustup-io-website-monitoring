@@ -13,6 +13,6 @@ kubectl create secret generic \
 kubectl create secret generic \
   trustup-io-ci-commons-token-secret \
   -n doppler-operator-system  \
-  --from-literal=serviceToken=dp.st.prd.VtQYA2buD0waFe4yQyBKN6kdlzo6bqy6SEQZY8xRLQ5  (stored in repository secret as DOPPLER_ACCESS_TOKEN_TRUSTUP_IO_CI_COMMONS)
+  --from-literal=serviceToken=dp.st.prd.VtQYA2buD0waFe4yQyBKN6kdlzo6bqy6SEQZY8xRLQ5  (stored in repository secret as DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS)
 
 kubectl apply -f devops/production/kubernetes/doppler/secrets --recursive
