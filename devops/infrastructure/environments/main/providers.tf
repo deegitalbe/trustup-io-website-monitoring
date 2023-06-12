@@ -8,20 +8,9 @@ provider "doppler" {
   alias = "local"
 }
 
-provider "doppler" {
-  doppler_token = doppler_service_token.ci.key
-  alias = "ci"
-}
-
 data "doppler_secrets" "ci_commons" {
   provider = doppler.ci_commons
 }
-
-data "doppler_secrets" "ci" {
-  depends_on = [ doppler_service_token.ci ]
-  provider = doppler.ci
-}
-
 
 data "doppler_secrets" "local" {
   depends_on = [ doppler_environment.local ]

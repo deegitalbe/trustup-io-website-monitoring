@@ -14,4 +14,5 @@ variable "DEV_ENVIRONMENT_TO_REMOVE" {
 variable "DEV_ENVIRONMENT_TO_ADD" {
   type = string
   default = ""
+  sensitive = false
 }

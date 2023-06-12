@@ -12,14 +12,6 @@ resource "doppler_service_token" "dev" {
   access = "read"
 }
 
-resource "doppler_service_token" "dev_related" {
-  for_each = doppler_config.dev_related
-  project = doppler_project.app.name
-  name = each.value.name
-  config = each.value.name
-  access = "read"
-}
-
 resource "doppler_service_token" "staging" {
   project = doppler_project.app.name
   name = "staging"

@@ -5,13 +5,6 @@ resource "doppler_secret" "ci_commons_app_ci_service_token" {
   value = doppler_service_token.ci.key
 }
 
-resource "doppler_secret" "app_ci_dev_related_environments" {
-  project = doppler_project.app.name
-  config = doppler_environment.ci.slug
-  name = "DEV_RELATED_ENVIRONMENTS"
-  value = local.dev_related_environments_stringified
-}
-
 resource "doppler_secret" "app_ci_local_service_tokens" {
   project = doppler_project.app.name
   config = doppler_environment.ci.slug
@@ -39,14 +32,6 @@ resource "doppler_secret" "app_ci_production_service_tokens" {
   config = doppler_environment.ci.slug
   name = "DOPPLER_SERVICE_TOKEN_PRODUCTION"
   value = doppler_service_token.production.key
-}
-
-resource "doppler_secret" "app_ci_dev_related_service_tokens" {
-  for_each = doppler_service_token.dev_related
-  project = doppler_project.app.name
-  config = doppler_environment.ci.slug
-  name = "DOPPLER_SERVICE_TOKEN_${replace(upper(each.value.name), "-", "_")}"
-  value = each.value.key
 }
 
 resource "doppler_secret" "ci_commons_local_app_port" {

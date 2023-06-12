@@ -15,23 +15,11 @@ locals {
 
 locals {
   # Remove current environment if needed
-  dev_related_environments = compact([for key, name in local.dev_related_environments_splitted : name == var.DEV_ENVIRONMENT_TO_REMOVE ? "" : name])
+  dev_related_environments = compact([for name in local.dev_related_environments_merged : name == var.DEV_ENVIRONMENT_TO_REMOVE ? "" : name])
 }
 
 locals {
   dev_related_environments_stringified = local.dev_related_environments == [] ? "" : join(",", local.dev_related_environments)
-}
-
-output "testastos_current" {
-  value = local.dev_related_environments_raw
-}
-
-output "testastos" {
-  value = local.dev_related_environments
-}
-
-output "testatos_stringified" {
-  value = local.dev_related_environments_stringified
 }
 
 locals {
