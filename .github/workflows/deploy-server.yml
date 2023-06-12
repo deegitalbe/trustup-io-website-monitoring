@@ -10,7 +10,7 @@ on:
 
 jobs:
   prepare_variables:
-    name: "Preparing terraform variables"
+    name: "Prepare variables"
     runs-on: ubuntu-latest
     steps:
     -
@@ -21,7 +21,9 @@ jobs:
       id: terraform_variables
       uses: henrotaym/prepare-terraform-variables-action@v2
       with:
-        app_key: ${{ github.event.repository.name }}
+        # TODO
+        # app_key: ${{ github.event.repository.name }}
+        app_key: trustup-io-so-much-testing
         github_branch: ${{ github.ref }}
     outputs:
       DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS: ${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}
@@ -89,7 +91,7 @@ jobs:
   #         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-web:${{ github.sha }}"
 
   deploy_main_doppler_config:
-    name: "Deploy main doppler config"
+    name: "Deploy main config"
     runs-on: ubuntu-latest
     needs:
       - prepare_variables
@@ -123,7 +125,7 @@ jobs:
       #   run: terraform apply -auto-approve
 
   deploy_dev_related_doppler_config:
-    name: "Deploy dev related doppler config"
+    name: "Deploy dev config"
     runs-on: ubuntu-latest
     needs:
       - prepare_variables
@@ -159,7 +161,7 @@ jobs:
       #   run: terraform apply -auto-approve
 
   # deploy_app:
-  #   name: "Deploy app in current environment"
+  #   name: "Deploy app"
   #   runs-on: ubuntu-latest
   #   needs:
   #     - prepare_variables
