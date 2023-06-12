@@ -18,6 +18,7 @@ data "doppler_secrets" "ci_commons" {
 }
 
 data "doppler_secrets" "ci" {
+  depends_on = [ doppler_service_token.ci ]
   provider = doppler.ci
 }
 
