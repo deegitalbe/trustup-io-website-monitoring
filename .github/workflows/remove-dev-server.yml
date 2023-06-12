@@ -38,13 +38,13 @@ jobs:
         working-directory: devops/infrastructure/app
     env:
       TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS="${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
-      TF_VAR_TRUSTUP_APP_KEY="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
-      TF_VAR_TRUSTUP_APP_KEY_SUFFIX="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIX }}"
-      TF_VAR_TRUSTUP_APP_KEY_SUFFIXED="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
+      TF_VAR_TRUSTUP_APP_KEY="${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
+      TF_VAR_TRUSTUP_APP_KEY_SUFFIX="${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIX }}"
+      TF_VAR_TRUSTUP_APP_KEY_SUFFIXED="${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
       TF_VAR_DOCKER_IMAGE_TAG="${{ github.sha }}"
-      TF_VAR_APP_URL="${{ jobs.prepare_variables.outputs.APP_URL }}"
-      TF_VAR_APP_ENVIRONMENT="${{ jobs.prepare_variables.outputs.APP_ENVIRONMENT }}"
-      TF_VAR_CLOUDFLARE_ZONE_SECRET="${{ jobs.prepare_variables.outputs.CLOUDFLARE_ZONE_SECRET }}"
+      TF_VAR_APP_URL="${{ needs.prepare_variables.outputs.APP_URL }}"
+      TF_VAR_APP_ENVIRONMENT="${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }}"
+      TF_VAR_CLOUDFLARE_ZONE_SECRET="${{ needs.prepare_variables.outputs.CLOUDFLARE_ZONE_SECRET }}"
     steps:
       - 
         name: Checkout repository
@@ -59,7 +59,7 @@ jobs:
             -backend-config="access_key=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}" \
             -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
             -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}"
-            -backend-config="key=${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.tfstate"
+            -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.tfstate"
       -
         name: Terraform plan
         run: terraform plan -destroy
@@ -78,8 +78,8 @@ jobs:
         working-directory: devops/infrastructure/environments
     env:
       TF_VAR_DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS="${{ secrets.DOPPLER_SERVICE_TOKEN_TRUSTUP_IO_CI_COMMONS }}"
-      TF_VAR_TRUSTUP_APP_KEY="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
-      TF_VAR_DEV_ENVIRONMENT_TO_REMOVE="${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
+      TF_VAR_TRUSTUP_APP_KEY="${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
+      TF_VAR_DEV_ENVIRONMENT_TO_REMOVE="${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
     steps:
       - 
         name: Checkout repository
@@ -94,7 +94,7 @@ jobs:
             -backend-config="access_key=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY_ID }}" \
             -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
             -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}"
-            -backend-config="key=${{ jobs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments.tfstate"
+            -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments.tfstate"
       -
         name: Terraform plan
         run: terraform plan -destroy
