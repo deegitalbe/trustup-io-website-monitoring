@@ -122,7 +122,7 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_main.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -auto-approve
+        run: terraform apply -destroy -auto-approve
 
   deploy_dev_related_doppler_config:
     name: "Deploy dev config"
@@ -154,7 +154,7 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_dev.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -auto-approve
+        run: terraform apply -destroy -auto-approve
 
   deploy_app:
     name: "Deploy application"
@@ -192,4 +192,4 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -auto-approve
+        run: terraform apply -destroy -auto-approve
