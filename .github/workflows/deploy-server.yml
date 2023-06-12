@@ -35,69 +35,70 @@ jobs:
       CLOUDFLARE_ZONE_SECRET: ${{ steps.terraform_variables.outputs.cloudflare_zone_secret }}
       DEV_ENVIRONMENT_TO_DEPLOY: ${{ steps.terraform_variables.outputs.dev_environment_to_deploy }}
 
-  build_docker_images:
-    name: "Build Docker images"
-    runs-on: ubuntu-latest
-    needs:
-      - prepare_variables
-    steps:
-      - 
-        name: Checkout repository
-        uses: actions/checkout@v3
-      - 
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - 
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - 
-        name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
-        name: Build and push cli image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile.production
-          target: cli
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-cli:${{ github.sha }}"
-      - 
-        name: Build and push cron image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile.production
-          target: cron
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-cron:${{ github.sha }}"
-      - 
-        name: Build and push fpm image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile.production
-          target: fpm_server
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-fpm:${{ github.sha }}"
-      - 
-        name: Build and push web image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile.production
-          target: web_server
-          push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-web:${{ github.sha }}"
+  # build_docker_images:
+  #   name: "Build Docker images"
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - prepare_variables
+  #   steps:
+  #     - 
+  #       name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - 
+  #       name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v2
+  #     - 
+  #       name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - 
+  #       name: Login to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - 
+  #       name: Build and push cli image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         file: Dockerfile.production
+  #         target: cli
+  #         push: true
+  #         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-cli:${{ github.sha }}"
+  #     - 
+  #       name: Build and push cron image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         file: Dockerfile.production
+  #         target: cron
+  #         push: true
+  #         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-cron:${{ github.sha }}"
+  #     - 
+  #       name: Build and push fpm image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         file: Dockerfile.production
+  #         target: fpm_server
+  #         push: true
+  #         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-fpm:${{ github.sha }}"
+  #     - 
+  #       name: Build and push web image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         file: Dockerfile.production
+  #         target: web_server
+  #         push: true
+  #         tags: "${{ secrets.DOCKERHUB_USERNAME }}/${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}-web:${{ github.sha }}"
 
   deploy_main_doppler_config:
     name: "Deploy main config"
     runs-on: ubuntu-latest
     needs:
-      - build_docker_images
+      - prepare_variables
+      # - build_docker_images
     defaults:
       run:
         working-directory: devops/infrastructure/environments/main
@@ -127,6 +128,7 @@ jobs:
     name: "Deploy dev config"
     runs-on: ubuntu-latest
     needs:
+      - prepare_variables
       - deploy_main_doppler_config
     defaults:
       run:
@@ -158,6 +160,7 @@ jobs:
     name: "Deploy application"
     runs-on: ubuntu-latest
     needs:
+      - prepare_variables
       - deploy_dev_related_doppler_config
     defaults:
       run:
@@ -167,7 +170,8 @@ jobs:
       TF_VAR_TRUSTUP_APP_KEY: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}"
       TF_VAR_TRUSTUP_APP_KEY_SUFFIX: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIX }}"
       TF_VAR_TRUSTUP_APP_KEY_SUFFIXED: "${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}"
-      TF_VAR_DOCKER_IMAGE_TAG: "${{ github.sha }}"
+      TF_VAR_DOCKER_IMAGE_TAG: "b0726a1576a542b8bcdbdea3a02f2c81d69079e4"
+      # TF_VAR_DOCKER_IMAGE_TAG: "${{ github.sha }}"
       TF_VAR_APP_URL: "${{ needs.prepare_variables.outputs.APP_URL }}"
       TF_VAR_APP_ENVIRONMENT: "${{ needs.prepare_variables.outputs.APP_ENVIRONMENT }}"
       TF_VAR_CLOUDFLARE_ZONE_SECRET: "${{ needs.prepare_variables.outputs.CLOUDFLARE_ZONE_SECRET }}"
