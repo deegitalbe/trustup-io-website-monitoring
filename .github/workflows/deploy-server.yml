@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare_variables
-      - build_docker_images
+      # - build_docker_images
     defaults:
       run:
         working-directory: devops/infrastructure/environments
