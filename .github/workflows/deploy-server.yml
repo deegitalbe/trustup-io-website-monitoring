@@ -118,9 +118,6 @@ jobs:
             -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}" \
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_main.tfstate"
       -
-        name: Terraform plan
-        run: terraform plan
-      -
         name: Terraform apply
         run: terraform apply -auto-approve
 
@@ -153,9 +150,6 @@ jobs:
             -backend-config="secret_key=${{ secrets.DIGITALOCEAN_SPACES_SECRET_ACCESS_KEY }}" \
             -backend-config="bucket=${{ secrets.DIGITALOCEAN_SPACES_TERRAFORM_STATES_BUCKET }}" \
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_dev.tfstate"
-      -
-        name: Terraform plan
-        run: terraform plan
       -
         name: Terraform apply
         run: terraform apply -auto-approve
