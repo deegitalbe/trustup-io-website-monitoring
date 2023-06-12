@@ -159,7 +159,8 @@ jobs:
     needs:
       - prepare_variables
       - build_docker_images
-      - deploy_doppler_config
+      - deploy_main_doppler_config
+      - deploy_dev_related_doppler_config
     defaults:
       run:
         working-directory: devops/infrastructure/app
