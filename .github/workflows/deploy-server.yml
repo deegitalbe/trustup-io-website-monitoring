@@ -6,7 +6,6 @@ on:
       - main
       - release/**
       - dev/**
-      - feature/automations # TODO REMOVE IT
 
 jobs:
   prepare_variables:
@@ -122,7 +121,7 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_main.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -destroy -auto-approve
+        run: terraform apply -auto-approve
 
   deploy_dev_related_doppler_config:
     name: "Deploy dev config"
@@ -154,7 +153,7 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY }}_environments_dev.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -destroy -auto-approve
+        run: terraform apply -auto-approve
 
   deploy_app:
     name: "Deploy application"
@@ -192,4 +191,4 @@ jobs:
             -backend-config="key=${{ needs.prepare_variables.outputs.TRUSTUP_APP_KEY_SUFFIXED }}.tfstate"
       -
         name: Terraform apply
-        run: terraform apply -destroy -auto-approve
+        run: terraform apply -auto-approve
