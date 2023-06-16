@@ -8,6 +8,7 @@ resource "kubectl_manifest" "doppler" {
 }
 
 resource "kubernetes_secret" "ci_commons_token" {
+  depends_on = [ kubectl_manifest.doppler ]
   type = "Opaque"
   metadata {
     name = "trustup-io-ci-commons-token-secret"
@@ -19,6 +20,7 @@ resource "kubernetes_secret" "ci_commons_token" {
 }
 
 resource "kubernetes_secret" "app_commons_token" {
+  depends_on = [ kubectl_manifest.doppler ]
   type = "Opaque"
   metadata {
     name = "trustup-io-app-commons-secret"
@@ -30,6 +32,7 @@ resource "kubernetes_secret" "app_commons_token" {
 }
 
 resource "kubernetes_secret" "app_token" {
+  depends_on = [ kubectl_manifest.doppler ]
   type = "Opaque"
   metadata {
     name = "trustup-io-app-secret"
