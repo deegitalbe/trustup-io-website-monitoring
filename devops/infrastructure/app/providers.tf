@@ -45,7 +45,7 @@ provider "doppler" {
 }
 
 provider "kubernetes" {
-  host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.endpoint
+  host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].host
   token = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].token
 
   client_certificate     = base64decode(digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].client_certificate)
@@ -54,17 +54,15 @@ provider "kubernetes" {
 }
 
 provider "kubectl" {
-  host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.endpoint
-  token = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].token
-
-  client_certificate     = base64decode(digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].client_certificate)
-  client_key             = base64decode(digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].client_key)
+  host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].host
   cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].cluster_ca_certificate)
+  token = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].token
+  load_config_file = false
 }
 
 provider "helm" {
   kubernetes {
-    host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.endpoint
+    host = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].host
     token = digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].token
 
     client_certificate     = base64decode(digitalocean_kubernetes_cluster.laravel-in-kubernetes.kube_config[0].client_certificate)

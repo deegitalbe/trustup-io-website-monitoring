@@ -2,9 +2,9 @@ resource "kubernetes_deployment" "default_queue_worker" {
   depends_on = [
     kubernetes_secret.app_commons_token,
     kubernetes_secret.app_token,
-    kubernetes_manifest.doppler,
-    kubernetes_manifest.doppler_app_commons_secret,
-    kubernetes_manifest.doppler_app_secret
+    kubectl_manifest.doppler,
+    kubectl_manifest.doppler_app_commons_secret,
+    kubectl_manifest.doppler_app_secret
   ]
   metadata {
     namespace = kubernetes_namespace.app.metadata[0].name
