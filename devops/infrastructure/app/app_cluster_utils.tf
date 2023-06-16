@@ -8,7 +8,7 @@ locals {
         placeholder = "{{name}}"
         # TODO
         # image = "${data.doppler_secrets.ci_commons.map.DOCKERHUB_USERNAME}/${var.TRUSTUP_APP_KEY}-{{name}}:${var.DOCKER_IMAGE_TAG}"
-        image = "${data.doppler_secrets.ci_commons.map.DOCKERHUB_USERNAME}/trustup-io-website-monitoring-{{name}}:${var.DOCKER_IMAGE_TAG}"
+        image = "${data.doppler_secrets.ci_commons.map.DOCKERHUB_USERNAME}/${var.TRUSTUP_APP_KEY}-{{name}}:${var.DOCKER_IMAGE_TAG}"
       }
     }
     cron = {
