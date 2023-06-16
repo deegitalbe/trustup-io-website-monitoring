@@ -1,8 +1,8 @@
 resource "helm_release" "traefik" {
   depends_on = [
     kubernetes_secret.ci_commons_token,
-    kubectl_manifest.doppler,
-    kubectl_manifest.doppler_traefik_secret
+    kubernetes_manifest.doppler,
+    kubernetes_manifest.doppler_traefik_secret
   ]
   namespace = kubernetes_namespace.traefik.metadata[0].name
   create_namespace = true

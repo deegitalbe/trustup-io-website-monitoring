@@ -2,9 +2,9 @@ data "kubectl_file_documents" "doppler_manifests" {
   content = file("manifests/doppler/main.yml")
 }
 
-resource "kubectl_manifest" "doppler" {
-  for_each   = data.kubectl_file_documents.doppler_manifests.manifests
-  yaml_body  = each.value
+resource "kubernetes_manifest" "doppler" {
+  for_each = data.kubectl_file_documents.doppler_manifests.manifests
+  manifest = yamldecode(each.value)
 }
 
 resource "kubernetes_secret" "ci_commons_token" {

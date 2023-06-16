@@ -2,9 +2,9 @@ resource "kubernetes_deployment" "cron" {
   depends_on = [
     kubernetes_secret.app_commons_token,
     kubernetes_secret.app_token,
-    kubectl_manifest.doppler,
-    kubectl_manifest.doppler_app_commons_secret,
-    kubectl_manifest.doppler_app_secret
+    kubernetes_manifest.doppler,
+    kubernetes_manifest.doppler_app_commons_secret,
+    kubernetes_manifest.doppler_app_secret
   ]
   metadata {
     name = local.app.cron.name
